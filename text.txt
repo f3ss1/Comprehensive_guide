@@ -1,2 +1,0 @@
-We are testing the GitHub workability at the moment.
-It seems to be working fine now.
