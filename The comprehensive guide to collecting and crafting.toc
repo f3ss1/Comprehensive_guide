@@ -1,0 +1,56 @@
+\select@language {russian}
+\contentsline {chapter}{Сбор материалов}{5}{Doc-Start}% 
+\contentsline {section}{Травничество}{5}{section*.1}% 
+\contentsline {subsection}{Поиск трав}{5}{section*.1}% 
+\contentsline {section}{Сбор растений}{5}{section*.3}% 
+\contentsline {subsection}{Проверка сбора}{5}{section*.4}% 
+\contentsline {section}{Определение растений}{6}{section*.8}% 
+\contentsline {subsection}{Неизвестные ингредиенты}{6}{section*.9}% 
+\contentsline {section}{Продажа трав}{6}{section*.10}% 
+\contentsline {section}{Сбор ингредиентов с существ}{6}{section*.10}% 
+\contentsline {section}{Harvesting the Earth}{8}{section*.14}% 
+\contentsline {subsection}{Поиск и определение ресурсов}{8}{section*.15}% 
+\contentsline {subsection}{Сбор ресурсов}{8}{section*.15}% 
+\contentsline {subsection}{Ценность полученных материалов}{8}{section*.15}% 
+\contentsline {subsection}{Особенные материалы для биома}{8}{section*.15}% 
+\contentsline {chapter}{Алхимия}{11}{section*.16}% 
+\contentsline {subsection}{Яды}{11}{section*.17}% 
+\contentsline {subsection}{Проверка Алхимии}{11}{section*.18}% 
+\contentsline {subsection}{Обратное конструирование}{11}{section*.18}% 
+\contentsline {subsection}{Создание ядов и зелий}{11}{section*.18}% 
+\contentsline {chapter}{Создание предметов и материалы}{13}{section*.18}% 
+\contentsline {subsection}{Типы предметов}{13}{section*.19}% 
+\contentsline {subsection}{Стоимость особенных предметов}{13}{section*.19}% 
+\contentsline {subsection}{Найм ремесленников}{13}{section*.19}% 
+\contentsline {paragraph}{Найм ремесленника}{13}{section*.20}% 
+\contentsline {subsection}{Создание уникального предмета}{13}{section*.20}% 
+\contentsline {section}{Особые материалы}{14}{section*.22}% 
+\contentsline {chapter}{Полевое руководство по материалам}{15}{section*.23}% 
+\contentsline {chapter}{Полевое руководство по флоре}{19}{section*.23}% 
+\contentsline {chapter}{Опциональные правила травничества и алхимии}{23}{section*.24}% 
+\contentsline {section}{Срок годности ингредиентов}{23}{section*.25}% 
+\contentsline {section}{Токсичность зелий}{23}{section*.25}% 
+\contentsline {section}{Сокровища Подземья}{23}{section*.25}% 
+\contentsline {section}{Опциональные запреты}{23}{section*.25}% 
+\contentsline {subsection}{Ампулы}{23}{section*.26}% 
+\contentsline {subsection}{Мешочек с ампулами}{23}{section*.26}% 
+\contentsline {subsection}{Мешочек с ингредиентами}{23}{section*.26}% 
+\contentsline {chapter}{Приложение А: списки ингредиентов}{25}{section*.26}% 
+\contentsline {section}{Яды}{25}{section*.27}% 
+\contentsline {subsection}{Растительные ингредиенты для ядов}{25}{section*.27}% 
+\contentsline {subsection}{Формулы и создание ядов}{25}{section*.28}% 
+\contentsline {section}{Зелья}{26}{section*.28}% 
+\contentsline {subsection}{Растительные ингредиенты для зелий}{26}{section*.29}% 
+\contentsline {paragraph}{Мастерство зельеварения}{26}{section*.29}% 
+\contentsline {subsection}{Формулы и создание зелий}{26}{section*.29}% 
+\contentsline {chapter}{Приложение Б: таблицы мест произрастания растений}{29}{section*.29}% 
+\contentsline {subsection}{Обычные ингредиенты}{29}{section*.30}% 
+\contentsline {subsection}{Равнина}{29}{section*.30}% 
+\contentsline {subsection}{Холмы}{29}{section*.30}% 
+\contentsline {subsection}{Лес}{29}{section*.30}% 
+\contentsline {subsection}{Пустыня}{29}{section*.30}% 
+\contentsline {subsection}{Вода/Побережье}{29}{section*.30}% 
+\contentsline {subsection}{Горы}{30}{section*.30}% 
+\contentsline {subsection}{Болото}{30}{section*.30}% 
+\contentsline {subsection}{Арктика}{30}{section*.30}% 
+\contentsline {subsection}{Подземье}{30}{section*.30}% 
