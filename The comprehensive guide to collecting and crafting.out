@@ -1,55 +1,20 @@
-\BOOKMARK [0][-]{Doc-Start}{Сбор материалов}{}% 1
-\BOOKMARK [1][-]{section*.1}{Травничество}{Doc-Start}% 2
-\BOOKMARK [2][-]{section*.1}{Поиск трав}{Doc-Start}% 3
-\BOOKMARK [1][-]{section*.3}{Сбор растений}{Doc-Start}% 4
-\BOOKMARK [2][-]{section*.4}{Проверка сбора}{section*.3}% 5
-\BOOKMARK [1][-]{section*.8}{Определение растений}{Doc-Start}% 6
-\BOOKMARK [2][-]{section*.9}{Неизвестные ингредиенты}{section*.8}% 7
-\BOOKMARK [1][-]{section*.10}{Продажа трав}{Doc-Start}% 8
-\BOOKMARK [1][-]{section*.10}{Сбор ингредиентов с существ}{Doc-Start}% 9
-\BOOKMARK [1][-]{section*.14}{Harvesting\040the\040Earth}{Doc-Start}% 10
-\BOOKMARK [2][-]{section*.15}{Поиск и определение ресурсов}{section*.14}% 11
-\BOOKMARK [2][-]{section*.15}{Сбор ресурсов}{section*.14}% 12
-\BOOKMARK [2][-]{section*.15}{Ценность полученных материалов}{section*.14}% 13
-\BOOKMARK [2][-]{section*.15}{Особенные материалы для биома}{section*.14}% 14
-\BOOKMARK [0][-]{section*.16}{Алхимия}{}% 15
-\BOOKMARK [1][-]{section*.17}{Яды}{section*.16}% 16
-\BOOKMARK [2][-]{section*.18}{Проверка Алхимии}{section*.16}% 17
-\BOOKMARK [2][-]{section*.18}{Обратное конструирование}{section*.16}% 18
-\BOOKMARK [2][-]{section*.18}{Создание ядов и зелий}{section*.16}% 19
-\BOOKMARK [0][-]{section*.18}{Создание предметов и материалы}{}% 20
-\BOOKMARK [1][-]{section*.19}{Типы предметов}{section*.18}% 21
-\BOOKMARK [2][-]{section*.19}{Стоимость особенных предметов}{section*.18}% 22
-\BOOKMARK [2][-]{section*.19}{Найм ремесленников}{section*.18}% 23
-\BOOKMARK [3][-]{section*.20}{Найм ремесленника}{section*.19}% 24
-\BOOKMARK [2][-]{section*.20}{Создание уникального предмета}{section*.18}% 25
-\BOOKMARK [1][-]{section*.22}{Особые материалы}{section*.18}% 26
-\BOOKMARK [0][-]{section*.23}{Полевое руководство по материалам}{}% 27
-\BOOKMARK [0][-]{section*.23}{Полевое руководство по флоре}{}% 28
-\BOOKMARK [0][-]{section*.24}{Опциональные правила травничества и алхимии}{}% 29
-\BOOKMARK [1][-]{section*.25}{Срок годности ингредиентов}{section*.24}% 30
-\BOOKMARK [1][-]{section*.25}{Токсичность зелий}{section*.24}% 31
-\BOOKMARK [1][-]{section*.25}{Сокровища Подземья}{section*.24}% 32
-\BOOKMARK [1][-]{section*.25}{Опциональные запреты}{section*.24}% 33
-\BOOKMARK [2][-]{section*.26}{Ампулы}{section*.25}% 34
-\BOOKMARK [2][-]{section*.26}{Мешочек с ампулами}{section*.25}% 35
-\BOOKMARK [2][-]{section*.26}{Мешочек с ингредиентами}{section*.25}% 36
-\BOOKMARK [0][-]{section*.26}{Приложение А: списки ингредиентов}{}% 37
-\BOOKMARK [1][-]{section*.27}{Яды}{section*.26}% 38
-\BOOKMARK [2][-]{section*.27}{Растительные ингредиенты для ядов}{section*.26}% 39
-\BOOKMARK [2][-]{section*.28}{Формулы и создание ядов}{section*.26}% 40
-\BOOKMARK [1][-]{section*.28}{Зелья}{section*.26}% 41
-\BOOKMARK [2][-]{section*.29}{Растительные ингредиенты для зелий}{section*.28}% 42
-\BOOKMARK [3][-]{section*.29}{Мастерство зельеварения}{section*.28}% 43
-\BOOKMARK [2][-]{section*.29}{Формулы и создание зелий}{section*.28}% 44
-\BOOKMARK [0][-]{section*.29}{Приложение Б: таблицы мест произрастания растений}{}% 45
-\BOOKMARK [1][-]{section*.30}{Обычные ингредиенты}{section*.29}% 46
-\BOOKMARK [2][-]{section*.30}{Равнина}{section*.29}% 47
-\BOOKMARK [2][-]{section*.30}{Холмы}{section*.29}% 48
-\BOOKMARK [2][-]{section*.30}{Лес}{section*.29}% 49
-\BOOKMARK [2][-]{section*.30}{Пустыня}{section*.29}% 50
-\BOOKMARK [2][-]{section*.30}{Вода/Побережье}{section*.29}% 51
-\BOOKMARK [2][-]{section*.30}{Горы}{section*.29}% 52
-\BOOKMARK [2][-]{section*.30}{Болото}{section*.29}% 53
-\BOOKMARK [2][-]{section*.30}{Арктика}{section*.29}% 54
-\BOOKMARK [2][-]{section*.30}{Подземье}{section*.29}% 55
+\BOOKMARK [0][-]{chapter.1}{Сбор материалов}{}% 1
+\BOOKMARK [1][-]{section*.1}{Травничество}{chapter.1}% 2
+\BOOKMARK [1][-]{section*.1}{Сбор растений}{chapter.1}% 3
+\BOOKMARK [1][-]{section*.1}{Определение растений}{chapter.1}% 4
+\BOOKMARK [1][-]{section*.1}{Продажа трав}{chapter.1}% 5
+\BOOKMARK [1][-]{section*.1}{Сбор ингредиентов с существ}{chapter.1}% 6
+\BOOKMARK [1][-]{section*.1}{Harvesting\040the\040Earth}{chapter.1}% 7
+\BOOKMARK [0][-]{chapter.2}{Алхимия}{}% 8
+\BOOKMARK [0][-]{chapter.3}{Создание предметов и материалы}{}% 9
+\BOOKMARK [0][-]{chapter.4}{Полевое руководство по материалам}{}% 10
+\BOOKMARK [0][-]{chapter.5}{Полевое руководство по флоре}{}% 11
+\BOOKMARK [0][-]{chapter.6}{Опциональные правила травничества и алхимии}{}% 12
+\BOOKMARK [1][-]{section*.2}{Срок годности ингредиентов}{chapter.6}% 13
+\BOOKMARK [1][-]{section*.2}{Токсичность зелий}{chapter.6}% 14
+\BOOKMARK [1][-]{section*.2}{Сокровища Подземья}{chapter.6}% 15
+\BOOKMARK [1][-]{section*.2}{Опциональные запреты}{chapter.6}% 16
+\BOOKMARK [0][-]{chapter.7}{Приложение А: списки ингредиентов}{}% 17
+\BOOKMARK [1][-]{section*.3}{Яды}{chapter.7}% 18
+\BOOKMARK [1][-]{section*.3}{Зелья}{chapter.7}% 19
+\BOOKMARK [0][-]{chapter.8}{Приложение Б: таблицы мест произрастания растений}{}% 20
