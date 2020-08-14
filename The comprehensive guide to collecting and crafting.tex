@@ -10,6 +10,7 @@
 %--------------------------------------
 
 \documentclass[a4paper, 9pt, twocolumn]{book} 
+\raggedbottom
 
 %--------------------------------------
 %Part for XeLaTex for Russian language (delete in case using pdfLatex)
@@ -43,6 +44,7 @@
 %--------------------------------------
 %Packages
 %--------------------------------------
+\usepackage{caption}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -69,12 +71,18 @@
 \usepackage{tikz}%Рисование рисунков
 \usepackage{xcolor}%Возможность устанавливать цвет шрифта
 \usepackage{float}% Возможность ставить H в положениях картинки
+\usepackage{tabularx}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{Q}{>{\hsize=.35\hsize}X}
+\newcolumntype{W}{>{\hsize=.35\hsize}C}
+\newcolumntype{E}{>{\hsize=.35\hsize}C}
+\newcolumntype{R}{>{\hsize=.2\hsize}C}
+\newcolumntype{T}{>{\hsize=.2\hsize}X}
+
+\usepackage[most]{tcolorbox}
+\usepackage{lipsum}
 \usepackage{titlesec}% Дополнительные уровни section
 % Настройка titlesec:
-\titleformat{\paragraph}
-{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
-\titlespacing*{\paragraph}
-{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 \setcounter{secnumdepth}{0}
 \setcounter{tocdepth}{1}
 \titleformat*{\subsection}{\Large\bfseries}
@@ -83,9 +91,12 @@
 \renewcommand*{\multicolumntoc}{2}
 %Настройка цветов секций и т.п.
 
+% Новые цвета
 
 \definecolor{sectioncolor}{RGB}{81, 28, 18}
 \definecolor{linecolor}{RGB}{197, 173, 115}
+\definecolor{altertable}{RGB}{230, 207, 191}
+\definecolor{framecolor}{RGB}{250, 247, 235}
 
 
 
@@ -119,9 +130,39 @@
 \newenvironment {theor}[2]
 {\smallskip \par \textbf{#1.} \textit{#2}  \par $\blacktriangleleft$}
 {\flushright{$\blacktriangleright$} \medskip \par} %лемма/теорема с доказательством
+
 \newenvironment {proofn}
 {\par $\blacktriangleleft$}
 {$\blacktriangleright$ \par} %доказательство
+
+\newenvironment {dndtable}
+{
+		\bigskip
+		\centering
+		\begin{tcolorbox}
+			[enhanced, 
+			sharp corners,
+			colback=framecolor, 
+			boxrule = 0pt, 
+			overlay={
+				\begin{tcbinvclipframe}
+					\path[fill=black] ([xshift=10pt,yshift=7pt]frame.north west) --
+					(frame.north west) --
+					(frame.north east) --
+					([xshift=-10pt, yshift=7pt]frame.north east) --
+					([xshift=-10pt, yshift=2pt]frame.north east) --
+					([xshift=10pt,yshift=2pt]frame.north west) -- cycle;
+					
+					\path[fill=black] ([xshift=10pt,yshift=-7pt]frame.south west) --
+					(frame.south west) --
+					(frame.south east) --
+					([xshift=-10pt, yshift=-7pt]frame.south east) --
+					([xshift=-10pt, yshift=-2pt]frame.south east) --
+					([xshift=10pt,yshift=-2pt]frame.south west) -- cycle;
+				\end{tcbinvclipframe}
+			}
+			]}
+{\end{tcolorbox}}
 %----------------------------------------
 %Список команд
 %----------------------------------------
@@ -167,6 +208,23 @@
 	}
 }
 
+\newcommand{\partc}[2][]{{
+		\bigskip
+		\noindent
+		\hspace{-0.25cm}
+		\fontsize{11pt}{13.2}
+		\color{sectioncolor}
+		\textbf{#2}}
+	
+	{
+		\ifx\relax#1\relax
+		\else
+		\noindent
+		\normalcolor
+		\textbf{#1}}
+	\bigskip
+	\fi
+}
 
 
 %\renewcommand{\vec}{\overline}
@@ -272,7 +330,7 @@
 	{}
 	{8pt}
 	{\fontsize{13pt}{5}\selectfont\color{sectioncolor} \textbf}
-	[\vskip -0.2cm
+	[\vskip -0.25cm
 	{
 		\noindent
 		\color{linecolor}
@@ -286,9 +344,45 @@
 	{8pt}
 	{\fontsize{11pt}{5}\selectfont\color{sectioncolor} \textbf}
 	[\vskip -0.2cm]
+	
+	\titleformat{\paragraph}
+	{\normalfont}
+	{}
+	{1em}
+	{\textbf}
+	
+	\titleformat{\partc}
+	{\normalfont}
+	{}
+	{1em}
+	{\fontsize{10pt}{5} \selectfont\color{sectioncolor} }
 
 	
 	\chapter{Сбор материалов}
+
+	%\begin{tikzpicture}
+	%\centering
+	%%\path[use as bounding box] (0, 0) rectangle +(0.1,0.1);
+	%\draw[black, line width=0.5pt] (0.2364, -0.913) -- 
+	%(0.07, -0.7466) --
+	%(0.07, -0.5649) --
+	%(0.07, -0.5649) arc (265:286:0.4577) --
+	%(0.2364, -0.536) -- 
+	%(0.2364, -0.536) arc (180:90:0.2996) --
+	%(0.5485, -0.2364) --
+	%(0.5485, -0.2364) arc (344:365:0.4577) -- 
+	%(9.3066, -0.07);
+	%\end{tikzpicture}
+	
+	%\begin{tcolorbox}[enhanced, interior hidden, boxrule = 0pt, frame code={
+				%\path [tcb fill frame, fill=white] ([yshift=7mm]frame.south west) -- ([yshift=-7mm]frame.north west) -- ([yshift=-7mm]frame.north west) arc (300:330:20mm) -- ([xshift=-7mm]frame.north east) -- ([xshift=-7mm]frame.north east) arc (210:240:20mm) -- ([yshift=7mm]frame.south east) -- ([yshift=7mm]frame.south east) arc (120:150:20mm) -- ([xshift=7mm] frame.south west) -- ([xshift=7mm] frame.south west) arc (30:58:20mm) -- cycle;},
+	%	]
+	%	\lipsum[2]
+	%\end{tcolorbox}
+	
+	
+
+	
 	
 	\section{Травничество}
 	
@@ -370,20 +464,26 @@
 	
 	Если у вас не получается определить ингредиент, то вы можете провести с этой целью исследование (XGE 132), или же провести эксперименты. Каждой единицы полученного ингредиента достаточно для проведения одной попытки эксперимента для определения его полезных свойств (см. раздел \textbf{Алхимия} ниже).
 	
-	\paragraph*{Ограничение на возможные знания}
+	\bigskip
 	
-	Вероятно, тот, с кем вы общаетесь, обладает ограниченным количеством информации. Это ограничение может проявляться тремя различными способами:
-	
-	\begin{itemize}
-		\item \textbf{Экосистема} (лесные растения, горные, и т.д)
+	\begin{dndtable}
+		{\Large \textbf{Ограничение на возможные знания}}
 		
-		\item \textbf{Редкость} (обычные, необычные, редкие или очень редкие)
+		Вероятно, тот, с кем вы общаетесь, обладает ограниченным количеством информации. Это ограничение может проявляться тремя различными способами:
 		
-		\item \textbf{Использование} (зелья или яды)
-	\end{itemize}
-
-	Алхимик или травник, с которым вы общаетесь, может, к примеру, заниматься только зельями, или же может быть ограничен знанием исключительно тех ингредиентов, которые произрастают неподалеку.	
+		\begin{itemize}
+			\item \textbf{Экосистема} (лесные растения, горные, и т.д)
+			
+			\item \textbf{Редкость} (обычные, необычные, редкие или очень редкие)
+			
+			\item \textbf{Использование} (зелья или яды)
+		\end{itemize}
+		
+		Алхимик или травник, с которым вы общаетесь, может, к примеру, заниматься только зельями, или же может быть ограничен знанием исключительно тех ингредиентов, которые произрастают неподалеку.
+	\end{dndtable}
+		
 	
+	\onecolumn
 	\section{Продажа трав}
 	
 	Травы и обычные растения зачастую продаются в больших и не очень городах, а иногда и в деревнях. Это может происходить либо днем, либо только в определенные периоды, однако способ торговли от этого не зависит. Однако, в зависимости от экономики вашего мира, цены и количество продаваемых ингредиентов может разительно отличаться.
@@ -396,53 +496,62 @@
 	
 	В случае провала, покупатель не находится до тех пор, пока игрок не совершит длительный отдых и не предпримет еще одну попытку. В случае успеха, игрок  находит покупателя неподалеку. Если это произошло во время простоя, то для этого должно пройти время, определяемое  редкостью ингредиента. Кроме того, она же может повлиять на вероятность того, что цена окажется не максимальной для отдельно взятого ингредиента. Обратитесь к таблице ниже, чтобы определить как цены, предлагаемые покупателем, так и необходимое число дней да его нахождения.
 	
-	\textbf{Продажа трав}
-	
-	\begin{center}
+	\begin{dndtable}
+	\vspace{-4mm}
+	\begin{table}[H]
 		
-		\begin{tabular}{|c|c|c|c|}
-			\hline
-			\textbf{Редкость} & \textbf{Цена} & \textbf{Модификатор d100} & \textbf{Дней чтобы найти покупателя (шанс за день)} \\
-			\hline
-			Обычный & До 15 зм & +10 & 1d4 (25\% за один день) \\
-			\hline
+		{\Large\textbf{Продажа трав}}
+		
+		\centering
+		
+		\medspace
+		
+		\begin{tabularx}{\linewidth}{c c c C}
+			\textbf{Редкость} & \textbf{Цена} & \textbf{Модификатор d100} & \textbf{Дней на поиск покупателя (шанс за день)} \\
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}До 15 зм & \cellcolor{altertable}+10 & \cellcolor{altertable}1d4 (25\% за один день) \\
 			Необычный & 16--40 зм & +0 & 1d6 (17\% за один день) \\
-			\hline
-			Редкий & 41--100 зм & -10 & 1d8 (13\% за один день) \\
-			\hline
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}41--100 зм & \cellcolor{altertable}-10 & \cellcolor{altertable}1d8 (13\% за один день) \\
 			Очень редкий & 100+ зм & -20 & 1d10 (10\% за один день) \\
-			\hline
-		\end{tabular}
+		\end{tabularx}
+	
+		\medspace
 		
-	\end{center}
+		\flushleft
+		
+		Модификатор d100 прибавляется к броску по таблице ниже.
+	\end{table}
 
-	Модификатор d100 прибавляется к броску по таблице ниже.
+
+	\vspace{-4mm}
+	\begin{table}[H]
+		
+		{\Large \textbf{Цены трав}}
+		
+		\centering
+		
+		\medspace
+		
+		\begin{tabularx}{\linewidth}{c X}
+			\textbf{d100 + модификатор} & \textbf{Ваш покупатель...} \\
+			\cellcolor{altertable}20 или меньше & \cellcolor{altertable}Покупатель предлагает десятую часть базовой цены \\
+			21--40 & Покупатель предлагает пятую часть базовой цены. Сомнительный покупатель предлагает половину базовой цены \\
+			\cellcolor{altertable}41--80 & \cellcolor{altertable}Покупатель предлагает половину базовой цены. Сомнительный предлагает полную цену \\
+			81--90 & Покупатель предлагает купить все ваши ингредиенты за один раз за половину цены \\
+			\cellcolor{altertable}90 или больше & \cellcolor{altertable}Сомнительный покупатель предлагает купить все ваши ингредиенты за полную цену без лишних вопросов \\
+		\end{tabularx}
 	
 	\medspace
-
-	\textbf{Цены трав}
 	
-	\begin{center}
-		
-		\begin{tabular}{|c|l|}
-			\hline
-			\textbf{d100 + модификатор} & \textbf{Вы находите...} \\
-			\hline
-			20 или меньше & Покупатель предлагает десятую часть базовой цены \\
-			\hline
-			21--40 & Покупатель предлагает пятую часть базовой цены. Сомнительный покупатель предлагает половину базовой цены \\
-			\hline
-			41--80 & Покупатель предлагает половину базовой цены. Сомнительный предлагает полную цену \\
-			\hline
-			81--90 & Покупатель предлагает купить все ваши ингредиенты за один раз за половину цены \\
-			\hline
-			90 или больше & Сомнительный покупатель предлагает купить все ваши ингредиенты за полную цену без лишних вопросов \\
-			\hline
-		\end{tabular}
-	\end{center}
-
+	\flushleft
+	
 	Личность покупателя предстоит определить ДМу. Иногда, особенно при покупке редких и очень редкий вещей, покупатели могут воспользоваться посредниками для сохранения анонимности. Если покупатель сомнительный, то сделка с ним может иметь последствия в будущем.
+		
+	\end{table}
+
+\end{dndtable}
 	
+	
+	\twocolumn
 	\section{Сбор ингредиентов с существ}
 	
 	Части существ могут быть использованы в качестве алхимичекских материалов, а также для создания доспехов и оружия для приключенцев, некоторые из них могут даже даровать какие-либо особенности. Кто-то может захотеть взять часть поверженного врага в качестве трофея или для украшения доспеха или дома.
@@ -457,67 +566,88 @@
 	
 	Число проверок, которые вы можете совершить, и время, необходимое для сбора различных частей создания, зависит от его размера и указано в таблице ниже.
 	
+	\begin{table}[H]
+		
+		\centering
+		
+		\begin{tabularx}{\linewidth}{C C C}
+			\textbf{Размер существа} & \textbf{Макс. число проверок сбора} & \textbf{Необходимое время}\\
+			\cellcolor{altertable}Крохотное & \cellcolor{altertable}1 & \cellcolor{altertable}15 минут\\
+			Маленькое & 1 & 30 минут\\
+			\cellcolor{altertable}Среднее & \cellcolor{altertable}2 & \cellcolor{altertable}1 час\\
+			Большое & 3 & 2 часа\\
+			\cellcolor{altertable}Огромное & \cellcolor{altertable}4 & \cellcolor{altertable}3 часа\\
+			Громадное & 5 & 4 часа\\
+		\end{tabularx}
+	\end{table}
+	
 	Каждая успешная проверка дает вам число единиц материала/ингредиента, зависящее от размера существа и указанное в таблице ниже.
+	
+	\begin{table}[H]
+		
+		\centering
+		
+		\begin{tabularx}{\linewidth}{c c}
+			\textbf{Размер существа} & \textbf{Единиц собрано за проверку}\\
+			\cellcolor{altertable}Крохотное & \cellcolor{altertable}1/4 единицы\\
+			Маленькое & 1/2 единицы\\
+			\cellcolor{altertable}Среднее & \cellcolor{altertable}1 единица\\
+			Большое & 2 единицы\\
+			\cellcolor{altertable}Огромное & \cellcolor{altertable}3 единицы\\
+			Громадное & 4 единицы\\
+		\end{tabularx}
+	\end{table}
 	
 	При использовании частей существ для создания брони и оружия вам необходимо число единиц материала, зависящее от размера существа, которое будет пользоваться изготавливаемым предметом. Вы можете прочитать больше о создании предметов и материалах в разделе ремесел.
 	
 	Когда вы используете собранные части в алхимии, вы можете использовать 1 единицу ингредиента для каждой проверки Ахимии или создания зелья или яда. Заметьте, что некоторое яды, извлекаемые из животных, не требуют алхимической обработки, например, яд виверны.
 	
-	\paragraph*{Сбор ядов}
 	
-	Если вы пытаетесь собрать яд существа, то делать это необходимо крайне аккуратно. Если вы провалите проверку сбора больше, чем на 5 пунктов, то вы подвергнетесь воздействию этого яда.
 	
-	Если вы владеете инструментами отравителя, то ваша практика и навыки обращения с ними приводят к отсутствию риска вашего отравления. Кроме того, вы можете добавить ваш бонус мастерства к проверке, если вы не владеете в навыке, необходимом для сбора. Если вы вы владеете одновременно и инструментами отравителя, и необходимым навыком, то вы получаете преимущество на этот бросок.
-	
-	При сборе яда вы получаете одну единицу яда с существа независимо от его размера. Это число не идет в учет суммарных проверок сбора для существа.
-	
+	\begin{dndtable}
+		
+		{\Large \textbf{Сбор ядов}}
+		
+		Если вы пытаетесь собрать яд существа, то делать это необходимо крайне аккуратно. Если вы провалите проверку сбора больше, чем на 5 пунктов, то вы подвергнетесь воздействию этого яда.
+		
+		Если вы владеете инструментами отравителя, то ваша практика и навыки обращения с ними приводят к отсутствию риска вашего отравления. Кроме того, вы можете добавить ваш бонус мастерства к проверке, если вы не владеете в навыке, необходимом для сбора. Если вы вы владеете одновременно и инструментами отравителя, и необходимым навыком, то вы получаете преимущество на этот бросок.
+		
+		При сборе яда вы получаете одну единицу яда с существа независимо от его размера. Это число не идет в учет суммарных проверок сбора для существа.
+		
+	\end{dndtable}
+
 	\subsubsection{Примеры собираемых частей}
 	
 	Приведенная ниже таблица приводит примеры частей существ, которые можно собрать. Некоторые из них могут причинять повреждения, если у вас не получится их собрать. Урон элементом может быть любым типом урона, которые определяется ДМом (например, персонаж может получить урон огнем при проваленной проверке для сбора огненной железы красного дракона). Вы можете определить нанесенный урон используя те же способы, что и при определении урона ловушек, приведенные в главе 5 \textit{Руководства Мастера}.	
 	
-\begin{center}
+	\begin{table}[H]
+		
+		\centering
+		
+		
+		\begin{tabularx}{\linewidth}{>{\hsize=0.55\hsize}C C}
+			\textbf{Часть} & \textbf{Возможные последствия} \\
+			\cellcolor{altertable}Жало & \cellcolor{altertable}Наносит урон ядом при проваленной проверке \\
+			Крылья, перья & --- \\
+			\cellcolor{altertable}Плавники & \cellcolor{altertable}--- \\
+			Хитин & --- \\
+			\cellcolor{altertable}Хвост & \cellcolor{altertable}--- \\
+			Клыки, зубы & Наносят колющий урон при проваленной проверке \\
+			\cellcolor{altertable}Внутренние органы & \cellcolor{altertable}---  \\
+			Рога & Наносят колющий урон при проваленной проверке \\
+			\cellcolor{altertable}Эктоплазма & \cellcolor{altertable}Наносит некротической урон при проваленной проверке \\
+			Чешуя & --- \\
+			\cellcolor{altertable}Элементальная эссенция & \cellcolor{altertable}Наносит урон элементом при проваленной проверке \\
+			Когти & Наносят рубящий урона при проваленной проверке \\
+			\cellcolor{altertable}Кости & \cellcolor{altertable}--- \\
+			Слизь, выделения & Наносят урон элементом или ядом при проваленной проверке \\
+			\cellcolor{altertable}Жизненно важный орган & \cellcolor{altertable}Наносит урон элементом при проваленной проверке  \\
+			Мех, шкура & --- \\
+			\cellcolor{altertable}Кровь & \cellcolor{altertable}--- \\
+		\end{tabularx}
+	\end{table}
 	
-	\begin{tabular}{|c|c|}
-		\hline
-		\textbf{Часть} & \textbf{Возможные последствия} \\
-		\hline
-		Жало & Наносит урон ядом при проваленной проверке \\
-		\hline
-		Крылья, перья & --- \\
-		\hline
-		Плавники & --- \\
-		\hline
-		Хитин & --- \\
-		\hline
-		Хвост & --- \\
-		\hline
-		Клыки, зубы & Наносят колющий урон при проваленной проверке \\
-		\hline
-		Внутренние органы & ---  \\
-		\hline
-		Рога & Наносят колющий урон при проваленной проверке \\
-		\hline
-		Эктоплазма & Наносит урон некротической энергией при проваленной проверке \\
-		\hline
-		Чешуя & --- \\
-		\hline
-		Элементальная эссенция & Наносит урон элементом при проваленной проверке \\
-		\hline
-		Когти & Наносят рубящий урона при проваленной проверке \\
-		\hline
-		Кости & --- \\
-		\hline
-		Слизь, выделения & Наносят урон элементом или ядом при проваленной проверке \\
-		\hline
-		Жизненно важный орган & Урон элементом при проваленной проверке  \\
-		\hline
-		Мех, шкура & --- \\
-		\hline
-		Кровь & --- \\
-		\hline
-	\end{tabular}
 
-\end{center}
 	
 	\subsubsection{Ценность различных частей}
 	
@@ -525,23 +655,25 @@
 	
 	\textbf{Например}, если вы собираете несколько перьев гиппогрифа (класс опасности 1), ценность каждого из них будет составлять 1\% от базового опыта, получаемого за него (200 очков опыта), что составляет 2 зм. Единица чешуи псевдодракона будет стоить 5 см (класс опасности 1/4), а за единицу чешуи взрослого синего дракона можно выручить до 1500 зм (класс опасности 16).
 	
-	\textbf{Цена за единицу}
 	\begin{center}
-		\begin{tabular}{|c|c|c|}
-			\hline
-			\textbf{ПО существа} & \textbf{Редкость существа} & \textbf{Цена за единицу} \\
-			\hline
-			4 или меньше & Обычный & 1\% опыта за существо \\
-			\hline
-			5--12 & Необычный & 5\% опыта за существо \\
-			\hline
-			13--18 & Редкий & 10\% опыта за существо \\
-			\hline
-			19--24 & Очень редкий & 25\% опыта за существо  \\
-			\hline
-			$25+$ & Легендарный & 50\% опыта за существо \\
-			\hline
-		\end{tabular}
+	
+	\begin{table}[H]
+		
+		{\Large\textbf{Цена за единицу}}
+		
+		\centering
+		
+		\medspace
+		
+		\begin{tabularx}{\linewidth}{C C C}
+			\textbf{ПО существа} & \textbf{Редкость существа} & \textbf{Цена за единицу (в зм)} \\
+			\cellcolor{altertable}4 или меньше & \cellcolor{altertable}Обычное & \cellcolor{altertable}1\% опыта за существо \\
+			5--12 & Необычное & 5\% опыта за существо \\
+			\cellcolor{altertable}13--18 & \cellcolor{altertable}Редкое & \cellcolor{altertable}10\% опыта за существо \\
+			19--24 & Очень редкое & 25\% опыта за существо  \\
+			\cellcolor{altertable}$25+$ & \cellcolor{altertable}Легендарное & \cellcolor{altertable}50\% опыта за существо \\
+		\end{tabularx}
+\end{table}
 	\end{center}
 	
 	\subsubsection{Свежевание (вариант для заготовки провизии)}
@@ -552,23 +684,19 @@
 	
 	Сбор мяса не идет в учет суммарных проверок сбора для существа.
 	
-	\begin{center}
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\textbf{Размер существа} & \textbf{Максимальная масса мяса} & \textbf{Необходимое время} \\
-		\hline
-		Крошечное & 1 фунт & 15 минут \\
-		\hline
-		Маленькое & 4 фунта & 30 минут \\
-		\hline
-		Среднее & 16 фунтов & 1 час \\
-		\hline
-		Большое & 32 фунта & 2 часа \\
-		\hline
-		Огромное & 64 фунта & 3 часа \\
-		\hline
-	\end{tabular}	
-	\end{center}
+		\begin{table}[H]
+			
+			\centering
+			
+			\begin{tabularx}{\linewidth}{C C C}
+				\textbf{Размер существа} & \textbf{Максимальная масса мяса} & \textbf{Необходимое время} \\
+				\cellcolor{altertable}Крохотное & \cellcolor{altertable}1 фунт & \cellcolor{altertable}15 минут \\
+				Маленькое & 4 фунта & 30 минут \\
+				\cellcolor{altertable}Среднее & \cellcolor{altertable}16 фунтов & \cellcolor{altertable}1 час \\
+				Большое & 32 фунта & 2 часа \\
+				\cellcolor{altertable}Огромное & \cellcolor{altertable}64 фунта & \cellcolor{altertable}3 часа \\
+			\end{tabularx}
+		\end{table}
 	
 	
 	
@@ -588,19 +716,19 @@
 	
 	Для каждой из этих проверок, если вы владеете подходящим инструментом, но при этом не владеет навыком Природа, добавьте свой бонус мастерства. Если же вы владеете и тем, и тем. то вы получаете преимущество на эту проверку.
 	
-	\begin{tabular}{|c|c|}
-		\hline
-		\textbf{КС} & \textbf{Редкость материала} \\
-		\hline
-		15 & Обычный \\
-		\hline
-		17 & Необычный \\
-		\hline
-		19 & Редкий \\
-		\hline
-		21 & Очень редкий \\
-		\hline
-	\end{tabular}
+	\begin{table}[H]
+		
+		\centering
+		
+		\begin{tabularx}{0.8\linewidth}{c C}
+			\textbf{КС} & \textbf{Редкость материала} \\
+			\cellcolor{altertable}15 & \cellcolor{altertable}Обычный \\
+			17 & Необычный \\
+			\cellcolor{altertable}19 & \cellcolor{altertable}Редкий \\
+			21 & Очень редкий \\
+		\end{tabularx}
+	\end{table}
+	
 	
 	Для нахождения какого-то конкретного материала вам необходимо успешно пройти проверку \textbf{Мудрости (Природа/Набор инструментов)} против КС, соответствующего его редкости. В случае провала, вы не находите \textbf{ничего} полезного
 	
@@ -612,21 +740,28 @@
 	
 	При сборе драгоценных камней, ДМ может либо сам определить, сколько вы их нашли, либо бросить d20 и сравнить результат с таблицей. Вы можете определить, какие конкретно камни были найдены, с помощью таблиц в руководстве мастера (\textit{DMG} 134)
 	
-	\begin{tabular}{|c|c|}
-		\hline
-		\textbf{d20} & \textbf{Число найденных самоцветов} \\
-		\hline
-		$1-10$ & 1 драгоценный камень (10 зм) \\
-		\hline
-		$11-15$ & 1d4+1 драгоценный камень (10 зм) \\
-		\hline
-		$16-18$ & 1 драгоценный камень (50 зм) \\
-		\hline
-		19 & 1d4+1 драгоценный камень (50 зм) \\
-		\hline
-		20 & Бросьте дважды \\
-		\hline
-	\end{tabular}
+	\begin{table}[H]
+		
+		\centering
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{d20} & \textbf{Число найденных самоцветов} \\
+			
+			\cellcolor{altertable}$1-10$ & \cellcolor{altertable}1 драгоценный камень (10 зм) \\
+			
+			$11-15$ & 1d4+1 драгоценный камень (10 зм) \\
+			
+			\cellcolor{altertable}$16-18$ & \cellcolor{altertable}1 драгоценный камень (50 зм) \\
+			
+			19 & 1d4+1 драгоценный камень (50 зм) \\
+			
+			\cellcolor{altertable}20 & \cellcolor{altertable}Бросьте дважды \\
+			
+		\end{tabularx}
+	\end{table}
+	
+	
 	
 	\subsubsection{Ценность полученных материалов}
 	
@@ -636,262 +771,320 @@
 	
 	Таблицы ниже могут быть использованы ДМом для определения, что доступно для сбора в каждой из приведенных локаций. Не везде в биоме обязательно встречаются все приведенные ресурсы, кроме того, одни из них могут встречаться реже. 
 	
-	\begin{minipage}{0.45\linewidth}
+	
+	
+	\begin{table}[H]
+
+		{\Large \textbf{Равнина}}
+		
 		\centering
-		\textbf{Равнина}
 		
-		\begin{tabular}{|c|c|}
-			\hline
+		\medspace 
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
 			\textbf{Редкость} & \textbf{Ресурс} \\
-			\hline
-			Обычный & Темная сталь \\
-			\hline
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Темная сталь \\
+			
 			Обычный & Темная древесина \\
-			\hline
-			Обычный & Плетеные листья \\
-			\hline
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Плетеные листья \\
+			
 			Необычный & Пятнистая береза \\
-			\hline
-			Редкий & Дуб Асмороха \\
-			\hline
-		\end{tabular}
-	
-		\medspace
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Дуб Асмороха \\
+			
+		\end{tabularx}
+	\end{table}
+
+	\begin{table}[H]
+
+		{\Large \textbf{Холмы}}
 		
-		\textbf{Лес}
-		
-		\begin{tabular}{|c|c|}
-			\hline
-			\textbf{Редкость} & \textbf{Ресурс} \\
-			\hline
-			Обычный & Темная древесина \\
-			\hline
-			Обычный & Плетеные листья \\
-			\hline
-			Необычный & Ядовитый Коа \\
-			\hline
-			Необычный & Пятнистая береза \\
-			\hline
-			Редкий & Дуб Асмороха \\
-			\hline
-		\end{tabular}
-	
-		\medspace
-		
-		\textbf{Горы}
-		
-		 \begin{tabular}{|c|c|}
-		 	\hline
-		 	\textbf{Редкость} & \textbf{Ресурс} \\
-		 	\hline
-		 	Обычный & Холодное железо \\
-		 	\hline
-		 	Обычный & Темная сталь \\
-		 	\hline
-		 	Необычный & Адаманит \\
-		 	\hline
-		 	Необычный & Мифрил \\
-		 	\hline
-		 	Необычный & Обсидиан \\
-		 	\hline
-		 	Редкий & Воздушный кристалл \\
-		 	\hline
-		 	Редкий & Дварфийский камень \\
-		 	\hline
-		 	Редкий & Вечный лед \\
-		 	\hline
-		 	Редкий & Игнум \\
-		 	\hline
-		 	Редкий & Орихалк \\
-		 	\hline
-		 	Очень редкий & Небесное железо \\
-		 	\hline
-		 \end{tabular}
-	 
-	 	\medspace
-	 	
-	 	\textbf{Пустыня}
-	 	
-	 	\begin{tabular}{|c|c|}
-	 		\hline
-	 		\textbf{Редкость} & \textbf{Ресурс} \\
-	 		\hline
-	 		Различная & Эллондийская шкура \\
-	 		\hline
-	 		Редкий & Игнум \\
-	 		\hline
-	 		Редкий & Орихалк  \\
-	 		\hline
-	 	\end{tabular}
-	\end{minipage}
-	\begin{minipage}{0.45\linewidth}
 		\centering
-		\textbf{Холмы}
 		
-		\begin{tabular}{|c|c|}
-			\hline
+		\medspace 
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
 			\textbf{Редкость} & \textbf{Ресурс} \\
-			\hline
-			Обычный & Холодное железо \\
-			\hline
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Холодное железо \\
+			
 			Обычный & Темная сталь \\
-			\hline
-			Необычный & Адаманит \\
-			\hline
+			
+			\cellcolor{altertable}Необычный & \cellcolor{altertable}Адаманит \\
+			
 			Необычный & Мифрил \\
-			\hline
-			Редкий & Дварфийский камень \\
-			\hline
-		\end{tabular}
-	
-		\medspace
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Дварфийский камень \\
+			
+		\end{tabularx}
+	\end{table}
+
+	\begin{table}[H]
+
+		{\Large \textbf{Лес}}
 		
-		\textbf{Болото}
+		\centering
 		
-		\begin{tabular}{|c|c|}
-			\hline
+		\medspace 
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
 			\textbf{Редкость} & \textbf{Ресурс} \\
-			\hline
-			Обычный & Темная древесина \\
-			\hline
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Темная древесина \\
+			
 			Обычный & Плетеные листья \\
-			\hline
-			Необычный & Ядовитый Коа \\
-			\hline
+			
+			\cellcolor{altertable}Необычный & \cellcolor{altertable}Ядовитый Коа \\
+			
 			Необычный & Пятнистая береза \\
-			\hline
-			Редкий & Дуб Асмороха \\
-			\hline
-		\end{tabular}
-	
-		\medspace
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Дуб Асмороха \\
+			
+		\end{tabularx}
+	\end{table}
+
+	\begin{table}[H]
+
+		{\Large \textbf{Горы}}
 		
-		\textbf{Подземье}
+		\centering
 		
-		\begin{tabular}{|c|c|}
-			\hline
+		\medspace 
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
 			\textbf{Редкость} & \textbf{Ресурс} \\
-			\hline
-			Обычный & Холодное железо \\
-			\hline
-			Необычный & Адаманит \\
-			\hline
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Холодное железо \\
+			
+			Обычный & Темная сталь \\
+			
+			\cellcolor{altertable}Необычный & \cellcolor{altertable}Адаманит \\
+			
 			Необычный & Мифрил \\
-			\hline
-			Необычный & Обсидиан \\
-			\hline
+			
+			\cellcolor{altertable}Необычный & \cellcolor{altertable}Обсидиан \\
+			
 			Редкий & Воздушный кристалл \\
-			\hline
-			Редкий & Дварфийский камень \\
-			\hline
-			Редкий & Игнум \\
-			\hline
-			Редкий & Орихалк \\
-			\hline
-			Очень редкий & Небесное железо \\
-			\hline
-		\end{tabular}
-	
-		\medspace
-		
-		\textbf{Арктика}
-		
-		\begin{tabular}{|c|c|}
-			\hline
-			\textbf{Редкость} & \textbf{Ресурс} \\
-			\hline
-			Обычный & Холодное железо \\
-			\hline
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Дварфийский камень \\
+			
 			Редкий & Вечный лед \\
-			\hline
-		\end{tabular}
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Игнум \\
+			
+			Редкий & Орихалк \\
+			
+			\cellcolor{altertable}Очень редкий & \cellcolor{altertable}Небесное железо \\
+			
+		\end{tabularx}
+	\end{table}
+
+	\begin{table}[H]
+
+		{\Large \textbf{Пустыня}}
+		
+		\centering
+		
+		\medspace 
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
+			\textbf{Редкость} & \textbf{Ресурс} \\
+			
+			\cellcolor{altertable}Различная & \cellcolor{altertable}Эллондийская шкура \\
+			
+			Редкий & Игнум \\
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Орихалк  \\
+			
+		\end{tabularx}
+	\end{table}
 	
+	\begin{table}[H]
+
+		{\Large \textbf{Болото}}
+		
+		\centering
+		
+		\medspace 
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
+			\textbf{Редкость} & \textbf{Ресурс} \\
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Темная древесина \\
+			
+			Обычный & Плетеные листья \\
+			
+			\cellcolor{altertable}Необычный & \cellcolor{altertable}Ядовитый Коа \\
+			
+			Необычный & Пятнистая береза \\
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Дуб Асмороха \\
+			
+		\end{tabularx}
+	\end{table}
+		
+	\begin{table}[H]
+
+		{\Large \textbf{Подземье}}
+		
+		\centering
+		
+		\medspace 
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
+			\textbf{Редкость} & \textbf{Ресурс} \\
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Холодное железо \\
+			
+			Необычный & Адаманит \\
+			
+			\cellcolor{altertable}Необычный & \cellcolor{altertable}Мифрил \\
+			
+			Необычный & Обсидиан \\
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Воздушный кристалл \\
+			
+			Редкий & Дварфийский камень \\
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}Игнум \\
+			
+			Редкий & Орихалк \\
+			
+			\cellcolor{altertable}Очень редкий & \cellcolor{altertable}Небесное железо \\
+			
+		\end{tabularx}
+	\end{table}
+
+	\begin{table}[H]
+
+		{\Large \textbf{Арктика}}
+		
+		\centering
+		
 		\medspace
 		
-		\textbf{Побережье}
-		
-		\begin{tabular}{|c|c|}
-			\hline
+		\begin{tabularx}{\linewidth}{C C}
+			
 			\textbf{Редкость} & \textbf{Ресурс} \\
-			\hline
-			Обычный & Коралл \\
-			\hline
-			Необычный & Обсидиан \\
-			\hline
-			Необычный & Ядовитый Коа \\
-			\hline
-			Редкий & Воздушный кристалл \\
-			\hline
-		\end{tabular}
-	\end{minipage}
-	
-	\paragraph*{Прочие ресурсы}
-	
-	Возможно, игроки будут искать что-то определенное, не указанное здесь. В таком случае, приведенные материалы можно использовать в качестве отправной точки для создания нового материала. Он должен как минимум иметь редкость, цену за единицу и быть полезным либо для создания оружия или брони (или применяться где-то еще), даже если эффект чисто декоративным.
-	
-	\textbf{Справка по материалам}
-	
-	\begin{center}
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Холодное железо \\
+			
+			Редкий & Вечный лед \\
+			
+		\end{tabularx}
+	\end{table}
 		
-		\begin{tabular}{|c|c|c|}
-			\hline
-			\textbf{Ресурс} & \textbf{Редкость} & \textbf{Источник/Биом} \\
-			\hline
-			Адаманит & Необычный & Горы, Холмы, Подземье \\
-			\hline
-			Воздушный кристалл & Редкий & Горы, Подземье, Побережье \\
-			\hline
-			Дуб Асмороха & Редкий & Лес, Болото, Равнина \\
-			\hline
-			Перья чудовища & Различная & Любое пернатое существо \\
-			\hline
-			Кости & Различная & Любое существо со скелетом \\
-			\hline
-			Хитин & Различная & Любое существо с панцирем \\
-			\hline
-			Холодное железо & Обычный & Горы, Холмы, Арктика, Подземье \\
-			\hline
-			Кораллы & Обычный & Побережье \\
-			\hline
-			Темная сталь & Необычный & Холмы, Равнина, Горы \\
-			\hline
-			Темная древесина & Обычный & Лес, Равнина, Болото \\
-			\hline
-			Дварфийский камень & Редкий & Горы, Холмы, Подземье \\
-			\hline
-			Эллондийская шкура & Различная & Пустынные существа  \\
-			\hline
-			Вечный лед & Редкий & Арктика, Горы (вершины) \\
-			\hline
-			Игнум & Редкий & Пустыня, Подземье, Горы (вулканы) \\
-			\hline
-			Инфернальная кожа & Очень редкий & Инфернальные планы \\
-			\hline
-			Инфернальная сталь & Очень редкий & Инфернальные планы \\
-			\hline
-			Плетеные листья & Обычный & Лес, Равнина, Болото \\
-			\hline
-			Мифрил & Необычный & Горы, Холмы, Подземье \\
-			\hline
-			Чешуя монстра & Различная & Любое существо с чешуей \\
-			\hline
-			Обсидиан & Необычный & Горы, Побережье, Подземье (вулканы) \\
-			\hline
-			Орихалк & Редкий & Пустыня, Горы, Подземье \\
-			\hline
-			Ядовитый Коа & Необычный & Лес, Болото, Побережье \\
-			\hline
-			Теневой шелк & Различная & Гнезда паукообразных существ \\
-			\hline
-			Шаед & Очень редкий & Царство Теней \\
-			\hline
-			Пятнистая береза & Необычный & Лес, Равнина, Болото \\
-			\hline
-			Небесное железо & Очень редкий & Подземье, Горы \\
-			\hline
-		\end{tabular}
-	\end{center}
+	\begin{table}[H]
+
+		{\Large \textbf{Побережье}}
+		
+		\centering
+		
+		\medspace
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
+			\textbf{Редкость} & \textbf{Ресурс} \\
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}Коралл \\
+			
+			Необычный & Обсидиан \\
+			
+			\cellcolor{altertable}Необычный & \cellcolor{altertable}Ядовитый Коа \\
+			
+			Редкий & Воздушный кристалл \\
+			
+		\end{tabularx}
+	\end{table}
+		
+		
 	
+	\begin{dndtable}
+			
+			{\Large\textbf{Прочие ресурсы}}
+			
+			Возможно, игроки будут искать что-то определенное, не указанное здесь. В таком случае, приведенные материалы можно использовать в качестве отправной точки для создания нового материала. Он должен как минимум иметь редкость, цену за единицу и быть полезным либо для создания оружия или брони (или применяться где-то еще), даже если эффект чисто декоративным.
+	\end{dndtable}
+	
+	
+	
+	\onecolumn
+	
+	\section{Общий перечень материалов}
+		
+		\begin{table}[H]
+			
+			\centering 
+			
+			\begin{tabularx}{0.8\linewidth}{C c C}
+				
+				\textbf{Ресурс} & \textbf{Редкость} & \textbf{Источник/Биом} \\
+				
+				\cellcolor{altertable}Адаманит & \cellcolor{altertable}Необычный & \cellcolor{altertable}Горы, Холмы, Подземье \\
+				
+				Воздушный кристалл & Редкий & Горы, Подземье, Побережье \\
+				
+				\cellcolor{altertable}Дуб Асмороха & \cellcolor{altertable}Редкий & \cellcolor{altertable}Лес, Болото, Равнина \\
+				
+				Перья чудовища & Различная & Любое пернатое существо \\
+				
+				\cellcolor{altertable}Кости & \cellcolor{altertable}Различная & \cellcolor{altertable}Любое существо со скелетом \\
+				
+				Хитин & Различная & Любое существо с панцирем \\
+				
+				\cellcolor{altertable}Холодное железо & \cellcolor{altertable}Обычный & \cellcolor{altertable}Горы, Холмы, Арктика, Подземье \\
+				
+				Кораллы & Обычный & Побережье \\
+				
+				\cellcolor{altertable}Темная сталь & \cellcolor{altertable}Необычный & \cellcolor{altertable}Холмы, Равнина, Горы \\
+				
+				Темная древесина & Обычный & Лес, Равнина, Болото \\
+				
+				\cellcolor{altertable}Дварфийский камень & \cellcolor{altertable}Редкий & \cellcolor{altertable}Горы, Холмы, Подземье \\
+				
+				Эллондийская шкура & Различная & Пустынные существа  \\
+				
+				\cellcolor{altertable}Вечный лед & \cellcolor{altertable}Редкий & \cellcolor{altertable}Арктика, Горы (вершины) \\
+				
+				Игнум & Редкий & Пустыня, Подземье, Горы (вулканы) \\
+				
+				\cellcolor{altertable}Инфернальная кожа & \cellcolor{altertable}Очень редкий & \cellcolor{altertable}Инфернальные планы \\
+				
+				Инфернальная сталь & Очень редкий & Инфернальные планы \\
+				
+				\cellcolor{altertable}Плетеные листья & \cellcolor{altertable}Обычный & \cellcolor{altertable}Лес, Равнина, Болото \\
+				
+				Мифрил & Необычный & Горы, Холмы, Подземье \\
+				
+				\cellcolor{altertable}Чешуя монстра & \cellcolor{altertable}Различная & \cellcolor{altertable}Любое существо с чешуей \\
+				
+				Обсидиан & Необычный & Горы, Побережье, Подземье (вулканы) \\
+				
+				\cellcolor{altertable}Орихалк & \cellcolor{altertable}Редкий & \cellcolor{altertable}Пустыня, Горы, Подземье \\
+				
+				Ядовитый Коа & Необычный & Лес, Болото, Побережье \\
+				
+				\cellcolor{altertable}Теневой шелк & \cellcolor{altertable}Различная & \cellcolor{altertable}Гнезда паукообразных существ \\
+				
+				Шаед & Очень редкий & Царство Теней \\
+				
+				\cellcolor{altertable}Пятнистая береза & \cellcolor{altertable}Необычный & \cellcolor{altertable}Лес, Равнина, Болото \\
+				
+				Небесное железо & Очень редкий & Подземье, Горы \\
+				
+			\end{tabularx}
+		\end{table}
+	
+	\twocolumn
 	\chapter{Алхимия}
 	
 	Хотя искусный травник может сделать целительную мазь с помощью корня Дикого Шалфея, она сможет залечить раны путешественников только в долгосрочной перспективе (обычно за несколько дней или недель) и только до определенной степени, зависящей от тяжести повреждений. Для большинства простолюдинов это единственное лечение, которое они могут найти или позволить себе.
@@ -917,10 +1110,16 @@
 		
 		\item Через кожу
 	\end{itemize}
-
-	\paragraph*{Отравление оружия}
 	
-	Один флакон яда можно нанести на 1 оружие или на 3 боеприпаса. Использованный таким образом яд сохраняет свои свойства до тех пор, пока оружие не совершит успешной атаки по существу или пока его не смоет.
+	\begin{dndtable}
+		
+		{\Large \textbf{Отравление оружия}}
+		
+		Один флакон яда можно нанести на 1 оружие или на 3 боеприпаса. Использованный таким образом яд сохраняет свои свойства до тех пор, пока оружие не совершит успешной атаки по существу или пока его не смоет.
+		
+	\end{dndtable}
+	
+	
 	
 	\subsection{Проверка Алхимии}
 	
@@ -942,23 +1141,36 @@
 	
 	Если у вас есть готовое зелье или яд, то вы можете попытаться применить метод обратного конструирования, чтобы узнать его формулу. Каждый флакон зелья или яда предоставляет три единицы для ваших экспериментов. Проведите проверку \textbf{Алхимии} против КС, зависящего от редкости образца.
 	
-	\begin{tabular}{|c|c|}
-		\hline
-		\textbf{КС} & \textbf{Редкость смеси} \\
-		\hline
-		10 & Обычный \\
-		\hline
-		15 & Необычный \\
-		\hline
-		20 & Редкий \\
-		\hline
-		25 & Очень редкий \\
-		\hline
-		30 & Легендарный \\
-		\hline
-	\end{tabular}
+	\begin{table}[H]
+		
+		\centering
+		
+		\begin{tabularx}{0.8\linewidth}{c C}
+			
+			\textbf{КС} & \textbf{Редкость смеси} \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}Обычный \\
+			
+			15 & Необычный \\
+			
+			\cellcolor{altertable}20 & \cellcolor{altertable}Редкий \\
+			
+			25 & Очень редкий \\
+			
+			\cellcolor{altertable}30 & \cellcolor{altertable}Легендарный \\
+			
+		\end{tabularx}
+	
+	\medspace
+	
+	\flushleft
 	
 	Все, что останется после экспериментов, будет иметь ослабленный эффект.
+	\end{table}
+	
+	
+	
+
 	
 	\subsubsection{Создание ядов и зелий}
 	
@@ -966,19 +1178,27 @@
 	
 	Отметим, что время для создания зелий лечения отличается и составляет 1/5/15/20 дней в зависимости от редкости.
 	
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\textbf{Редкость ингредиентов} & \textbf{Дней (Зелье/Яд)} & \textbf{Стоимость} \\
-		\hline
-		Обычный & $2/1$ & 25 зм \\
-		\hline
-		Необычный & $5/2$ & 100 зм \\
-		\hline
-		Редкий & $25/12$ & 1000 зм \\
-		\hline
-		Очень редкий & $60/30$ & 10000 зм \\
-		\hline
-	\end{tabular}
+	\begin{table}[H]
+		
+		\centering
+		
+		\begin{tabularx}{\linewidth}{C C C}
+			
+			\textbf{Редкость ингредиентов} & \textbf{Дней (Зелье/Яд)} & \textbf{Стоимость} \\
+			
+			\cellcolor{altertable}Обычный & \cellcolor{altertable}$2/1$ & \cellcolor{altertable}25 зм \\
+			
+			Необычный & $5/2$ & 100 зм \\
+			
+			\cellcolor{altertable}Редкий & \cellcolor{altertable}$25/12$ & \cellcolor{altertable}1000 зм \\
+			
+			Очень редкий & $60/30$ & 10000 зм \\
+			
+		\end{tabularx}
+		
+	\end{table}
+	
+	
 	
 	Смотри таблицы Формул в Аппендиксе А для дополнительной информации.
 	
@@ -1020,19 +1240,27 @@
 	
 	Цена найма ремесленника зависит от того, предмет какого типа вы хотите сделать. В общем случае, для более редких типов предметов вам необходимы те, кто могут работать с материалами и имеют чертеж (или что-то подобное). Вы можете посмотреть стоимость найма работников в таблице ниже. Если вы нанимаете работника, чтобы создать уникальный предмет из особенных материалов, стоимость работ за день составит 15 зм.
 	
-	\paragraph{Найм ремесленника}
+	\begin{table}[H]
+		
+		{\Large \textbf{Найм ремесленника}}
+		
+		\medspace
+		
+		\centering
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
+			\textbf{Тип предмета} & \textbf{Стоимость за день} \\
+			
+			\cellcolor{altertable}Обычный (обычная работа ремесленника) & \cellcolor{altertable}2 зм \\
+			
+			Особенный (особые материалы) & 5 зм \\
+			
+			\cellcolor{altertable}Уникальный (совершенно новый предмет) & \cellcolor{altertable}$10+$ зм ($15+$ зм с особыми материалами) \\
+			
+		\end{tabularx}
+	\end{table}
 	
-	\begin{tabular}{|c|c|}
-		\hline
-		\textbf{Тип предмета} & \textbf{Стоимость за день} \\
-		\hline
-		Обычный (обычная работа ремесленника) & 2 зм \\
-		\hline
-		Особенный (особые материалы) & 5 зм \\
-		\hline
-		Уникальный (совершенно новый предмет) & $10+$ зм ($15+$ зм с особыми материалами) \\
-		\hline
-	\end{tabular}
 	
 	\subsubsection{Создание уникального предмета}
 	
@@ -1046,29 +1274,41 @@
 	
 	В случае успеха, наши вам поздравления! Вы успешно создали новый, уникальный предмет. В случае провала, вы должны завершить длительный отдых, прежде чем вы можете провести проверку заново. После трех проваленных проверок, проект признается невозможным для дальнейших попыток его починить, материалы оказываются утерянными, и приходится начинать сначала.
 	
-	\paragraph*{Модификатор редкости материалов}
+	\begin{table}[H]
+		
+		{\Large \textbf{Модификатор редкости материалов}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{C C}
+			
+			\textbf{Редкость} & \textbf{Модификатор КС} \\
+			
+			\cellcolor{altertable}Не особенный & \cellcolor{altertable}$+0$ \\
+			
+			Обычный & $+1$ \\
+			
+			\cellcolor{altertable}Необычный & \cellcolor{altertable}$+2$ \\
+			
+			Редкий & $+3$ \\
+			
+			\cellcolor{altertable}Очень редкий & \cellcolor{altertable}$+4$ \\
+			
+		\end{tabularx}
+	\end{table}
 	
-	\begin{tabular}{|c|c|}
-		\hline
-		\textbf{Редкость} & \textbf{Модификатор КС} \\
-		\hline
-		Не особенный & $+0$ \\
-		\hline
-		Обычный & $+1$ \\
-		\hline
-		Необычный & $+2$ \\
-		\hline
-		Редкий & $+3$ \\
-		\hline
-		Очень редкий & $+4$ \\
-		\hline
-	\end{tabular}
+	\begin{dndtable}
+		
+		{\Large \textbf{Требования особых уникальных предметов}}
+		Отметим, что для каждого компонент, используемого в предмете, требуется полный набор материалов. К примеру, для изготовления двойного кинжала из темной стали потребуется 4 единицы темной стали, по две на каждый кинжал. КС в таком случае составит 13 + 2 (модификатор от темной стали) + 1 (один тип особого материала) + 2 (в изделии используется \textit{два} кинжала) = 18.
+		
+		Еще пример: для изготовления нагрудника из холодного железа, пронизанного вечным льдом, потребует 3 единицы холодного железа и 3 единицы вечного льда. КС составит 13 + 3 (модификатор вечного льда) + 2 (два различных особых материала) + 1 (\textit{один} нагрудник) = 19.
+		
+	\end{dndtable}
 	
-	\paragraph*{Требования особых уникальных предметов}
 	
-	Отметим, что для каждого компонент, используемого в предмете, требуется полный набор материалов. К примеру, для изготовления двойного кинжала из темной стали потребуется 4 единицы темной стали, по две на каждый кинжал. КС в таком случае составит 13 + 2 (модификатор от темной стали) + 1 (один тип особого материала) + 2 (в изделии используется \textit{два} кинжала) = 18.
-	
-	Еще пример: для изготовления нагрудника из холодного железа, пронизанного вечным льдом, потребует 3 единицы холодного железа и 3 единицы вечного льда. КС составит 13 + 3 (модификатор вечного льда) + 2 (два различных особых материала) + 1 (\textit{один} нагрудник) = 19.
 	
 	\subsection{Особые материалы}
 	
@@ -1084,31 +1324,40 @@
 	
 	Например, чешуйчатый доспех из чешуи взрослого синего дракона (уровень опасности 16) будет давать вам дополнительный +1 к классу доспеха, что в сумме будет давать КД = 15 + модификатор ловкости (максимум +2).
 	
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\textbf{ПО существа} & \textbf{Бонус к броне} & \textbf{Бонус к оружию} \\
-		\hline
-		4 или меньше & $+0$ & $+0$ \\
-		\hline
-		$5 - 12$ & $+0$ & $+1$ \\
-		\hline
-		$13 - 18$ & $+1$ & $+2$ \\
-		\hline
-		$19 - 24$ & $+2$ & $+3$ \\
-		\hline
-		$25 + $ & $+3$ & $+4$ \\
-		\hline
-	\end{tabular}
+	\begin{table}[H]
+		\begin{tabularx}{\linewidth}{C C C}
+			
+			\textbf{ПО существа} & \textbf{Бонус к броне} & \textbf{Бонус к оружию} \\
+			
+			\cellcolor{altertable}4 или меньше & \cellcolor{altertable}$+0$ & \cellcolor{altertable}$+0$ \\
+			
+			$5 - 12$ & $+0$ & $+1$ \\
+			
+			\cellcolor{altertable}$13 - 18$ & \cellcolor{altertable}$+1$ & \cellcolor{altertable}$+2$ \\
+			
+			$19 - 24$ & $+2$ & $+3$ \\
+			
+			\cellcolor{altertable}$25 + $ & \cellcolor{altertable}$+3$ & \cellcolor{altertable}$+4$ \\
+			
+		\end{tabularx}
+	\end{table}
 	
-	\paragraph*{Жизнь в обучении}
 	
-	Тот факт, что вы не знаете, как использовать молот и наковальню, не значит, что вы не можете этому обучиться!
+	\begin{dndtable}
+		
+		{\Large \textbf{Жизнь в обучении}}
+		
+		Тот факт, что вы не знаете, как использовать молот и наковальню, не значит, что вы не можете этому обучиться!
+		
+		Число дней. которое потребуется для получения владения новым инструментом или языком любого типа составит \boxed{\textbf{50 - 5 x модификатор Интеллекта}}. Отрицательные модификаторы не могут повысить время обучения.
+		
+		ДМ может решить, что навыки, которыми вы уже владеете, могут внести свой вклад в обучение чему-то новому. Например, высокая Сила может уменьшить время, требуемое для обучения кузнечному делу, а Ловкость может помочь в изучении искусства подделывания предметов или в ювелирном деле. И наоборот, обучение чему-то может потребовать определенного минимального значения какого-то параметра. Вряд ли волшебник с Силой 8 когда-то сможет стать мастером-кузнецом.
+		
+		Стоимость обучения новому навыку составляет 25 зм за рабочую неделю (5 дней). Она может варьироваться по целому ряду причин, например, ваш инструктор может давать вам скидку за вашу дружбу.
+		
+	\end{dndtable}
 	
-	Число дней. которое потребуется для получения владения новым инструментом или языком любого типа составит \boxed{\textbf{50 - 5 x модификатор Интеллекта}}. Отрицательные модификаторы не могут повысить время обучения.
 	
-	ДМ может решить, что навыки, которыми вы уже владеете, могут внести свой вклад в обучение чему-то новому. Например, высокая Сила может уменьшить время, требуемое для обучения кузнечному делу, а Ловкость может помочь в изучении искусства подделывания предметов или в ювелирном деле. И наоборот, обучение чему-то может потребовать определенного минимального значения какого-то параметра. Вряд ли волшебник с Силой 8 когда-то сможет стать мастером-кузнецом.
-	
-	Стоимость обучения новому навыку составляет 25 зм за рабочую неделю (5 дней). Она может варьироваться по целому ряду причин, например, ваш инструктор может давать вам скидку за вашу дружбу.
 	
 	\titleformat{\chapter}
 	{}
@@ -1120,13 +1369,7 @@
 	
 	Здесь вы найдете список особых материалов, их стоимости за единицу и свойства, которые они даруют доспехам и оружию. Некоторые из них могут иметь какие-то еще свойства, определяемые вашим Мастером (например, доспехи из кости дракона могут даровать вам сопротивление типу урона, причиняемого драконом).
 	
-	\bigskip
-	
-	\noindent\textbf{Адаманит}
-	
-	\noindent \textit{Необычный материал}
-	
-	\smallskip
+	\partc[Необычный материал]{Адаманит}
 	
 	\noindent Блестяще-черный металл, который называют одним из самый прочных известных материалов.
 	
@@ -1138,11 +1381,7 @@
 		\item \textbf{Оружие:} атаки игнорируют сопротивление любым немагическим сопротивлениям (например, сопротивление дробящему или колющему урону).
 	\end{itemize}
 
-	\noindent\textbf{Воздушный кристалл}
-	
-	\noindent \textit{Редкий материал}
-	
-	\smallskip
+	\partc[Редкий материал]{Воздушный кристалл}
 	
 	\noindent Светло-голубой кристалл, похожий на стеклянный, для создания легкого, изящного оружия.
 	
@@ -1154,11 +1393,7 @@
 		\item \textbf{Оружие:} получает свойство \textit{легкое}.
 	\end{itemize}
 
-	\noindent \textbf{Дуб Асмороха}
-	
-	\noindent \textit{Редкий материал}
-	
-	\smallskip
+	\partc[Редкий материал]{Дуб Асмороха}
 	
 	\noindent Это твердая древесина была опалена дочерна. На ощупь она очень холодная, создается впечатление, что она совершенно лишена жизни.
 	
@@ -1169,12 +1404,8 @@
 		
 		\item \textbf{Оружие:} когда вы наносите удар по существу, вы наносите дополнительные 1d4 некротического урона.
 	\end{itemize}
-
-	\noindent \textbf{Перья монстров}
 	
-	\noindent \textit{Редкость варьируется}
-	
-	\smallskip
+	\partc[Редкость варьируется]{Перья монстров}
 	
 	\noindent У гиппогрифов, рух, огромных орлов и прочих летающих существ невероятно красивые перья, подчеркивающие их величие.
 	
@@ -1184,11 +1415,7 @@
 		\item \textbf{Доспех:} при ношении одежды или неметаллического доспеха, сделанного с использованием этих перьев, вы получаете преимущество на проверки \textbf{Ухода за  животных}
 	\end{itemize}
 
-	\noindent \textbf{Кости}
-	
-	\noindent \textit{Редкость варьируется}
-	
-	\smallskip
+	\partc[Редкость варьируется]{Кости}
 	
 	\noindent Несколько костей, соединенных вместе, зачастую используются шаманами и дикарями. Они делают вашу внешность более свирепой.
 	
@@ -1200,11 +1427,7 @@
 		\item \textbf{Оружие:} вы получаете преимущество на проверки \textbf{Запугивания}. Возможны дополнительные эффекты, определяемые ДМом.
 	\end{itemize}
 	
-	\noindent \textbf{Хитин}
-	
-	\noindent \textit{Редкость варьируется}
-	
-	\smallskip
+	\partc[Редкость варьируется]{Хитин}
 	
 	\noindent Легкие, гибкие панцири различных существ, например гигантских крабов или реморазов, могут применяться в создании доспехов.
 	
@@ -1214,11 +1437,7 @@
 		\item \textbf{Доспех:} максимальных бонус ловкости для средних доспехов увеличивается на 1. Требования к Силе у тяжелых доспехов снижаются на 1.
 	\end{itemize}
 
-	\noindent  \textbf{Холодное железо}
-	
-	\noindent \textit{Обычный материал}
-	
-	\smallskip
+	\partc[Обычный материал]{Холодное железо}
 	
 	\noindent Это железо как будто бы излучает неестественных холод. Известно своей эффективностью против фей.
 	
@@ -1230,11 +1449,7 @@
 		\item \textbf{Оружие:} При попадании по фее вы можете бросить урон дважды и выбрать желаемый результат.
 	\end{itemize}
 
-	\noindent \textbf{Коралл}
-	
-	\noindent \textit{Обычный материал}
-	
-	\smallskip
+	\partc[Обычный материал]{Коралл}
 	
 	\noindent Обычно используется морскими существами для украшения оружия и брони. Это твердый материал, дарующий бонусы в воде.
 	
@@ -1246,11 +1461,7 @@
 		\item \textbf{Оружие:} Все атаки, совершаемые в ближнем бою оружием из кораллов, не получают помехи при бросках атаки под водой.
 	\end{itemize}
 
-	\noindent \textbf{Темная сталь}
-	
-	\noindent \textit{Необычный материал}
-	
-	\smallskip 
+	\partc[Необычный материал]{Темная сталь}
 	
 	\noindent Металл, чей цвет зачастую сравнивают с темным ночным небом, который можно найти только в местах, где случаются частые грозы, бури и штормы. Известен тем, что привносит с собой энергию бури.
 	
@@ -1262,13 +1473,9 @@
 		\item \textbf{Оружие:} когда вы совершаете атаку по существу, вы наносите дополнительные 1d4 урона молнией.
 	\end{itemize}
 
-	\noindent \textbf{Темная древесина}
+	\partc[Обычный материал]{Темная древесина}
 	
-	\noindent \textit{Обычный материал}
-	
-	\smallskip
-	
-	Эта древесина такая же прочная, как сталь, но невероятно легкая.
+	\noindent Эта древесина такая же прочная, как сталь, но невероятно легкая.
 	
 	\begin{itemize}
 		\item \textbf{Цена за единицу:} 100 зм
@@ -1276,11 +1483,7 @@
 		\item \textbf{Доспех:} убирает все ограничения доспеха по Силе.
 	\end{itemize}
 
-	\noindent \textbf{Дварфийский камень}
-	
-	\noindent \textit{Редкий материал}
-	
-	\smallskip
+	\partc[Редкий материал]{Дварфийский камень}
 	
 	\noindent Этот камень, похожий на мрамор, зачастую используется дварфами при создании церемониальных доспехов несмотря на то, что они получаются тяжелее и неудобнее, чем металлические аналоги.
 	
@@ -1290,11 +1493,7 @@
 		\item \textbf{Доспех:} Тяжелые доспехи дают дополнительные +1 к КД, но ограничения по Силе увеличиваются на +2.
 	\end{itemize}
 
-	\noindent \textbf{Эллондийская шкура}
-	
-	\noindent \textit{Редкость варьируется}
-	
-	\smallskip
+	\partc[Редкость варьируется]{Эллондийская шкура}
 	
 	\noindent Эту выгоревше-оранжевую шкуру получают с тел существ, живущих в засушливых областях, например в пустынях.
 	
@@ -1304,11 +1503,7 @@
 		\item \textbf{Доспех:} вы можете без особых проблем переносить экстремальную жару. Вы не обязаны проходить проверки Телосложения, если вы находитесь в зоне с температурой до 38 $^\circ$C
 	\end{itemize}
 
-	\noindent \textbf{Вечный лед}
-	
-	\noindent \textit{Редкий материал}
-	
-	\smallskip
+	\partc[Редкий материал]{Вечный лед}
 	
 	\noindent Этот необычайно твердый кусок небесно голубого льда переносит высокие температуры, благодаря чему его нельзя растопить при обычных условиях.
 	
@@ -1320,11 +1515,7 @@
 		\item \textbf{Оружие:} когда вы совершаете атаку по существу, вы наносите дополнительные 1d4 урона холодом.
 	\end{itemize}
 
-	\noindent \textbf{Игнум}
-	
-	\noindent \textit{Редкий материал}
-	
-	\smallskip
+	\partc[Редкий материал]{Игнум}
 	
 	\noindent Этот черный, полупрозрачный камень, внутри которого находится что-то, напоминающее лаву, нагревающее его поверхность.
 	
@@ -1336,11 +1527,7 @@
 		\item \textbf{Оружие:} когда вы совершаете атаку по существу, вы наносите дополнительные 1d4 урона огнем.
 	\end{itemize}
 
-	\noindent \textbf{Инфернальная кожа}
-	
-	\noindent \textit{Очень редкий материал}
-	
-	\smallskip
+	\partc[Очень редкий материал]{Инфернальная кожа}
 	
 	\noindent Красноватая прочная кожа, созданная из шкуры Адской твари.
 	
@@ -1350,11 +1537,7 @@
 		\item \textbf{Доспех:} вы получаете бонус +1 к КД и сопротивление к урону огнем.
 	\end{itemize}
 
-	\noindent \textbf{Инфернальная сталь}
-	
-	\noindent \textit{Очень редкий материал}
-	
-	\smallskip
+	\partc[Очень редкий материал]{Инфернальная сталь}
 	
 	\noindent Кроваво красный металл, который можно найти в Девяти Преисподних и который излучает тепло и ненависть в равных пропорциях.
 	
@@ -1366,11 +1549,7 @@
 		\item \textbf{Оружие:} когда вы совершаете атаку по существу, вы наносите дополнительные 2d4 урона огнем.
 	\end{itemize}
 
-	\noindent \textbf{Плетеные листья} %Ну такое...
-	
-	\noindent \textit{Обычный материал}
-	
-	\smallskip
+	\partc[Обычный материал]{Плетеные листья}
 	
 	\noindent Узор этих от природы сплетенных листьев делает их необычайно прочными.
 	
@@ -1380,11 +1559,7 @@
 		\item \textbf{Доспех:} вы получаете преимущество на проверки Ловкости (Скрытность) в лесах и подобных им областях.
 	\end{itemize}
 
-	\noindent \textbf{Мифрил}
-	
-	\noindent \textit{Необычный материал}
-	
-	\smallskip
+	\partc[Необычный материал]{Мифрил}
 	
 	\noindent Этот бело-серебристый материал легче и гибче обычной стали.
 	
@@ -1396,11 +1571,7 @@
 		\item \textbf{Оружие:} Двуручное оружие, сделанное из мифрила, теряют свойство \textbf{тяжелое}, а все остальное оружие получает свойство \textbf{легкое}.
 	\end{itemize}
 
-	\noindent \textbf{Чешуя монстра}
-	
-	\noindent \textit{Редкость варьируется}
-	
-	\smallskip
+	\partc[Редкость варьируется]{Чешуя монстра}
 	
 	\noindent Чешуйки могут быть различных цветов, форм и размеров. Некоторые из них могут даже совершать в себе остатки магии, которой до этого владело существо, у которого их забрали.
 	
@@ -1410,11 +1581,7 @@
 		\item \textbf{Доспех:} Дробящий, колющий и рубящий урон, который вы получаете из внешних источников, уменьшается на 1d10. Возможны дополнительные эффекты, определяемые вашим Мастером. См. страницу 11 этого руководства для возможных примеров. % Пофиксить страницу
 	\end{itemize}
 
-	\noindent \textbf{Обсидиан}
-	
-	\noindent \textit{Необычный материал}
-	
-	\smallskip 
+	\partc[Необычный материал]{Обсидиан}
 	
 	\noindent Этот камень, с переливами от черного к темно-фиолетовому, похож на стекло и сверкает на свету. Известен за свою необычайную остроту.
 	
@@ -1426,11 +1593,7 @@
 		\item \textbf{Оружие:} Любое колющее или рубящее оружие, сделанное из обсидиана, наносит дополнительные 1d4 урона того же типа. 
 	\end{itemize}
 
-	\noindent \textbf{Орихалк}
-	
-	\noindent \textit{Редкий материал}
-	
-	\smallskip 
+	\partc[Необычный материал]{Орихалк}
 	
 	\noindent Этот бронзово-оранжевый металл светится теплым светом вблизи источников магии. Используется для поглощения магической сущности.
 	
@@ -1442,11 +1605,7 @@
 		\item \textbf{Оружие:} когда вы совершаете атаку по существу, вы наносите дополнительные 1d4 урона силовым полем. 
 	\end{itemize}
 
-	\noindent \textbf{Ядовитый Коа}
-	
-	\noindent \textit{Необычный материал}
-	
-	\smallskip
+	\partc[Необычный материал]{Ядовитый Коа}
 	
 	\noindent Это покрытая мхом прочная древесина, вокруг которой парят мелкие споры.
 	
@@ -1458,11 +1617,7 @@
 		\item \textbf{Оружие:} когда вы совершаете атаку по существу, вы наносите дополнительные 1d4 урона ядом.
 	\end{itemize}
 
-	\noindent \textbf{Теневой шелк}
-	
-	\noindent \textit{Редкость варьируется}
-	
-	\smallskip
+	\partc[Редкость варьируется]{Теневой шелк}
 	
 	\noindent Этот полупрозрачный шелк бережно создается пауками и подобными им существами.
 	
@@ -1472,11 +1627,7 @@
 		\item \textbf{Доспех:} вы получаете преимущество на проверки Ловкости (Скрытность) в слабо затемненных областях.
 	\end{itemize}
 
-	\noindent \textbf{Шаед}
-	
-	\noindent \textit{Очень редкий материал}
-	
-	\smallskip
+	\partc[Очень редкий материал]{Шаед}
 	
 	\noindent Невероятно мягкий материал, который можно найти только в Царстве Теней, пронизанный темной сущностью плана.
 	
@@ -1486,11 +1637,7 @@
 		\item \textbf{Доспех:} вы получаете бонус +1 к КД и сопротивление психическому урону.
 	\end{itemize}
 
-	\noindent \textbf{Пятнистая береза}
-	
-	\noindent \textit{Необычный материал}
-	
-	\smallskip
+	\partc[Необычный материал]{Пятнистая береза}
 	
 	\noindent Пятна на этой крепкой древесину на самом деле являются небольшими отверстиями, покрывающими ее поверхность. Эти отверстия излучают едкий, жгучий запах.
 	
@@ -1502,11 +1649,7 @@
 		\item \textbf{Оружие:} когда вы совершаете атаку по существу, вы наносите дополнительные 1d4 урона кислотой.
 	\end{itemize}
 
-	\noindent \textbf{Небесное железо}
-	
-	\noindent \textit{Очень редкий материал}
-	
-	\smallskip
+	\partc[Очень редкий материал]{Небесное железо}
 	
 	\noindent Это ярко-белый металл с мягкой текстурой, но потрясающей воображение прочностью. Известно, что он наделен небесной силой.
 	
@@ -1522,320 +1665,173 @@
 	
 	Здесь вы найдете описание различных ингредиентов, которые собирают травники. Некоторые растения достаточно известны, чтобы их можно было тут же распознать, другие же могут оставаться неизвестными годами. Каждый ингредиент привносит уникальные свойства и применения для повернутого на алхимии участника вашей группы.
 	
-	\bigskip
-	
-	\noindent \textbf{Арктический плющ}
-	
-	\smallskip
+	\partc{Арктический плющ}
 	
 	\noindent  Это ядовитое растение обычно растёт в экстремально холодной окружающей среде, либо на огромной высоте, где снег покрывает вершины. Листья растения источают приятный сладковатый мятный аромат, а корень горький и содержит кислоту. Это растение очень популярно среди убийц, благодаря способности его корней замораживать кровообращение живых существ, что приводит к смерти в агонии. Арктический плющ зачастую оказывается смертельным для неподготовленных путешественников, которые с легкостью получают летальную дозу яда, наслаждаясь ароматом его листьев.
 	
-	\medspace
-	
-	\noindent \textbf{Стрельчатый корень}
-	
-	\smallskip
+	\partc{Стрельчатый корень}
 	
 	\noindent Это необычно длинное растение может достигать четырёх футов в высоту. Его очень легко заметить из-за отличительного бело-коричневого окраса. Растёт в пустынях и других засушливых средах из-за низкой необходимости в воде. При нарезании кубиками и кипячении в воде, получается пенистый отвар серебристого цвета, который идеально подходит для заточки и \textbf{полировки оружия и брони}, без использования магии или других средств.
 	
-	\medspace
-	
-	\noindent \textbf{Шляпка мухомора}
-	
-	\smallskip
+	\partc{Шляпка мухомора}
 	
 	\noindent Этот большой гриб часто встречается в грибницах вблизи водоёмов или в других влажных местах. У него толстый синий стебель с большой красной шапкой, что позволяет его довольно легко опознать. Профессиональные травники часто срезают только головку, потому что гриб имеет поразительную способность отращивать её заново всего за несколько недель.
 	
-	\medspace
+	\partc{Дыхание василиска}
 	
-	\noindent \textbf{Дыхание василиска}
+	\noindent Часто называемая ''Серым воздержанием'' дворянами всего мира, это тёмно-серая виноградная лоза, которая редко встречается на вершинах гор. Существует легенда, что эта лоза --- подарок богов, способ проверить человечество. Часто продаваемое за возмутительные суммы золота, Дыхание василиска легко может привлечь нежелательное внимание к тем, кто пытается продать её.
 	
-	\smallskip
+	\partc{Кровьтрава}
 	
-	\noindent Часто называемая Серым воздержанием среди дворян всего мира, это тёмно-серая виноградная лоза, которая редко встречается на вершинах гор. Существует легенда, что эта лоза --- подарок богов, способ проверить человечество. Часто продаваемая за возмутительные суммы золота, Дыхание василиска легко может привлечь нежелательное внимание к тем, кто пытается продать её.
-	
-	\medspace
-	
-	\noindent \textbf{Кровьтрава}
-	
-	\smallskip
 	\noindent Самое простое и обыкновенное растение, которое можно найти в дикой местности --- эта тёмно-коричневая трава. У него нет абсолютно никаких значительных качеств, кроме как относительно безвредных. При должной сноровке и умении она может стать отличным средством пропитания. Травники не считают эту траву чем-то особенным, но всё же обычно ее собирают, поскольку она практически не занимает места в сумках.
 	
-	\medspace
+	\partc{Синий кровожаб}
 	
-	\noindent \textbf{Синий Кривожаб}
+	\noindent Этот гриб очень распространен. У него тёмно-синяя шляпка и жёлтый полосатый стеблем. Если до него дотронуться, то он выпустит облако синей пыльцы. Она не наносит никакого вреда живым существам, однако легко может ненадолго окрасить кожу или вещи. Этот порошок обычно используется для красок и красителей. Травники ищут этот гриб вокруг небольших водопоев, где живут водные обитатели.
 	
-	\smallskip
-	
-	\noindent Этот гриб явлеяется еще одним распространённым грибом. У него тёмно-синяя шляпка и жёлтый полосатый стеблем. Если его потревожить, то он выпустит облако синей пыльцы. Это не наносит никакого вреда живым существам, однако легко может ненадолго окрасить кожу или вещи. Этот порошок обычно используется для красок и красителей. Травники ищут этот гриб вокруг небольших водопоев, где живут водные обитатели.
-	
-	\medspace
-	
-	\noindent \textbf{Сок кактуса}
-	
-	\smallskip 
+	\partc{Сок кактуса}
 	
 	\noindent Прозрачная жидкость, может быть найдена в большинстве кактусов по всему миру. Её достаточно сложно извлечь в силу того, что со многими кактусами работать опасно. Пивовары любят использовать этот сок во многих рецептах, так как он отсрочивает опьянение и позволяет людям выпить больше, прежде чем их вырубит.
 	
-	\medspace 
-	
-	\noindent \textbf{Хромовая слизь}
-	
-	\smallskip
+	\partc{Хромовая слизь}
 	
 	\noindent Эта тонкая, слизеподобная субстанция может быть найдена плавающей на поверхности воды, как будто она имеет собственный разум. Часто учёные ошибочно путают это вещество с ртутью из-за внешней схожести и консистенции. При попытке собрать слизь, она изменит и перестроит любую флору, взаимодействующую с ней.
 	
-	\medspace 
-	
-	\noindent \textbf{Небесный Глонд}
-	
-	\smallskip
+	\partc{Небесный Глонд}
 	
 	\noindent Это четырехлистное растение до безобразия тяжело найти. Во многом это связано с тем, что растет оно в наиболее скрытых и непредсказуемых местах. Его листья по форме похожи на звезды ночного неба.
 	
-	\medspace
-	
-	\noindent \textbf{Дьявольский кроволист}
-	
-	\smallskip
+	\partc{Дьявольский кроволист}
 	
 	\noindent Существует лишь несколько подтверждений существования этих красно-жёлтых цветов. Это растение с большими красными листьями может быть найдено вновь только на закате человечества. А когда-то оно было популярным декором в множествах садов и домов. Говорят, что оно даёт огромную жизненную силу и здоровье тому, кто сможет правильно его приготовить.
 	
-	\medspace
-	
-	\noindent \textbf{Цветок Дракуса}
-	
-	\smallskip
+	\partc{Цветок Дракуса}
 	
 	\noindent Эти ярко-красные и бледно-зеленые цветы могут быть найдены как в умеренном, так и в теплом климате. Это любимое растение артистов и фокусников из-за способности его лепестков самовозгораться при умеренном трении. Такой огонь не причиняет вреда, только создает красивые театральные искры.
 	
-	\medspace 
-	
-	\noindent \textbf{Сушеная  Эфедра}
-	
-	\smallskip 
+	\partc{Сушеная Эфедра}
 	
 	\noindent Это шипастый куст, который растет преимущественно в сухом климате и который тяжело собрать, не поцарапав кожу. У него глубокий, темно-фиолетовый цвет издалека, которые превращается в черный вблизи. Травники зачастую находят сладковато-розовый запах притягательным. Его также можно использовать в лечебных отварах, поскольку он усиливает свойства Дикого шалфея.
 	
-	\medspace
-	
-	\noindent \textbf{Рвоск}
-	
-	\smallskip
+	\partc{Рвоск}
 	
 	\noindent Этот плотный белый воск зачастую просачивается из деревьев во влажных областях. Его обычно используют при создании свечей, поскольку он быстро тает и вновь затвердевает и при этом достаточно прочный, чтобы из него можно было сделать что-то красивое. Несмотря на его полезность, длительное взаимодействие с ним может вызвать раздражение на коже.
 	
-	\medspace
-	
-	\noindent \textbf{Фенхелевый шелк}
-	
-	\smallskip
+	\partc{Фенхелевый шелк}
 	
 	Это белое растение, которое похоже на паутину, из-за чего его часто с ней путают, растет в холодных и темных местах. У него есть крочкообразные усики, которыми он закрепляется на ближайших камнях или растениях. Приключенцы, умеющие им пользоваться, могут придумать ему множество применений. Помимо очевидных, он может помочь в защите от низких температур северных гор.
 	
-	\medspace
-	
-	\noindent \textbf{Дьявольский плющ}
-	
-	\smallskip
+	\partc{Дьявольский плющ}
 	
 	\noindent Эта длинная, шипастая лоза может достигать трех футов в длину, а шипы ее достигают дюйма в длину. Нередко на них можно увидеть кровь, так как многие животные и существа случайно натыкаются на плющ. Лоза кажется даже разумной, так как она расслабляется когда пуста и сжимается, когда в неё что-то попало.
 	
-	\medspace
-	
-	\noindent \textbf{Замороженные саженцы}
-	
-	\smallskip
+	\partc{Замороженные саженцы}
 	
 	\noindent Эти небольшие стручки размером с горошину можно найти среди цветов в очень холодных условиях. Названные из-за своего замороженного вида, их достаточно часто собирают и используют в холодных алкогольных напитках.
 	
-	\medspace
-	
-	\noindent \textbf{Листья Харрады}
-	
-	\smallskip
+	\partc{Листья Харрады}
 	
 	\noindent Эти большие желтые листья можно зачастую найти на самых верхушках крон деревьев.  Его часто культивируют и собирают различные банды и гильдии воров для изготовления и продажи наркотиков. Употребление вызывает кратковременную эйфорию, за которой следует длительный период восстановления. Местные власти борются с этим наркотиком, потому что слишком большие дозы могут причинить значительный вред, а иногда даже смерть.
 	
-	\paragraph*{Наркотическая зависимость}
+	\begin{dndtable}
+		
+		{\Large \textbf{Наркотическая зависимость}}
+		
+		\noindent По решению Мастера, в игру может быть введена зависимость от некоторых веществ. Такие растения и ингредиенты, которые зачастую значительно увеличивают возможности персонажа, обычно оставляют свои следы в долгосрочной перспективе. Они могут быть найдены на стенках желудка или в легких спустя дни и недели после использования. Персонажи, употребляющие такие вещества, должны представлять себе последствия, которые те привнесут.
+		
+	\end{dndtable}
 	
-	\noindent По решению Мастера, в игру может быть введена зависимость от некоторых веществ. Такие растения и ингредиенты, которые зачастую значительно увеличивают возможности персонажа, обычно оставляют свои следы в долгосрочной перспективе. Они могут быть найдены на стенках желудка или в легких спустя дни и недели после использования. Персонажи, употребляющие такие вещества, должны представлять себе последствия, которые те привнесут.
 	
-	\medspace
 	
-	\noindent \textbf{Нектар гиацинта}
+	\partc{Нектар Гиацинта}
 	
 	\noindent Эта бело-синяя густая жидкость может быть извлечена из гиацинта во влажном климате. Этот нектар пользуется большим спросом и часто используется высококвалифицированными охранниками для борьбы с ядами. Он не выводит яд полностью, но сильно ослабляет его свойства.
 	
-	\medspace
-	
-	\noindent \textbf{Водополох}
-	
-	\smallskip
+	\partc{Водополох}
 	
 	\noindent Названное в честь своей внешней схожести с известным растением, это трезубчатое сине-черное растение можно найти в тёмных и сырых средах обитания. Сам по себе не имеет особых положительных эффектов. Тем не менее, опытные алхимики смогли раскрыть его потенциал для создания зелий, позволяющих дышать под водой.
 	
-	\medspace
-	
-	\noindent \textbf{Сердце железного дерева}
-	
-	\smallskip
+	\partc{Сердце железного дерева}
 	
 	\noindent Это маленькое белое семя обычно встречается в недрах железных деревьев. Эти семена медленно пульсируют, если их крепко сжать, часто их называют ''сердцебиение природы''. Говорят, что если его приготовит хороший травник, то оно позволит может увеличить физический размер существа.
 	
-	\medspace
-	
-	\noindent \textbf{Побег лаванды}
-	
-	\smallskip
+	\partc{Побег лаванды}
 	
 	\noindent Эти фиолетовые цветы на длинном стебле зачастую можно найти качающимися на ветру в больших скоплениях. Они очень распространены на равнинах, у них сладких аромат, однако они довольно горькие на вкус.
 
-	\medspace
-	
-	\noindent \textbf{Светящаяся пыль}
+	\partc{Светящаяся пыль}
 	
 	\noindent Этот порошок можно стрясти с желтых светящихся грибов, которые нередко можно найти в особенно темных местах. Он сохраняет янтарно-золотистое свечение на протяжении недели после сбора. Многие травники разводят светящиеся грибы в темных подвалах, чтобы всегда иметь доступ к этой пыли под рукой.
 	
-	\medspace
-	
-	\noindent \textbf{Корень мандрагоры}
-	
-	\smallskip
+	\partc{Корень мандрагоры}
 	
 	\noindent  У этого коричневатого корня заостренные края по всей поверхности, из-за чего у многих травников, собирающих его неправильно, появляются раны. Если снять внешнюю оболочку то внутри окажется мягкая, нежная сердцевина, которую относительно просто можно съесть. Ее нередко используют врачи для уменьшения боли от яда или болезни.
 	
-	\medspace
-	
-	\noindent \textbf{Семена молочая}
-	
-	\smallskip
+	\partc{Семена молочая}
 	
 	\noindent Это маленькие белые полупрозрачные семена можно найти на цветах молочая. Их часто едят дети из-за их безобидного вида,что затем приводит к плохим последствия для пищеварения. Если эти семена перемолоть и разбавить жидкостью, то они сильно увеличат сопротивляемость всевозможным эффектам.
 	
-	\medspace
-	
-	\noindent \textbf{Порошок умершей плоти} % Ну ыыыЫыЫ
-	
-	\smallskip 
+	\partc{Порошок умершей плоти} % ыы
 	
 	\noindent Этот тёмно-пурпурный порошок часто встречается на цветах мха в тёмных и холодных условиях. Этот порошок часто используется в качестве макияжа среди молодых мужчин и женщин для омоложения лица. При употреблении с магическим катализатором эффект становится постоянным.
 	
-	\medspace
-	
-	\noindent \textbf{Ягоды паслена}
-	
-	\smallskip
+	\partc{Ягоды паслена}
 	
 	\noindent Эти голубые ягоды можно встретить в маленьких скоплениях, среди кустов в богатой на растительность местности. Их можно есть без вреда для здоровья, животные часто едят их из-за их сладкого, но резковатого вкуса. Искусный травник может собрать их и раскрыть потенциал маслянистой мякоти.
 	
-	\medspace
-	
-	\noindent \textbf{Изначальный бальзам}
-	
-	\smallskip
+	\partc{Изначальный бальзам}
 	
 	\noindent Было обнаружено, что это густое вещество меняет свою окраску будто бы по своему усмотрению. Бальзам необычно тёплый на ощупь и кажется, что он сохраняет тепло в течении нескольких недель подряд. Травники часто находят это вещество на скалах во влажных местах. Точная редкость вещества неизвестна, так как изменчивость его внешнего вида затрудняет его поиски.
 	
-	\medspace
-	
-	\noindent \textbf{Ртутный лишайник}
-	
-	\smallskip
+	\partc{Ртутный лишайник}
 	
 	\noindent Этот серебристо-серый мох можно найти практически на чем угодно, создается впечатление, что он игнорирует вообще все известные правила. Из-за его мягкой, шелковистой текстуры его используют некоторые небольшие млекопитающие, чтобы устелить свои гнезда. Если его поджечь, то он начнет источать кислые ядовитые пары.
 	
-	\medspace
-	
-	\noindent \textbf{Сияющий синтоцвет}
-	
-	\smallskip
+	\partc{Сияющий синтоцвет}
 	
 	\noindent Это длинное вытянутое чёрное семя испускает жёлтое свечение. Если сломать стручок, то он начнет источать цветочный запах. Внутри находится несколько более мелких семян, которые  которые светятся теплым золотистым светом. Если их размолоть, то они темнеют и превращаются в фиолетовую смолянистую субстанцию.
 	
-	\medspace
-	
-	\noindent \textbf{Каменный вьюн}
-	
-	\smallskip
+	\partc{Каменный вьюн}
 	
 	\noindent Эту чрезвычайно твёрдая тёмно-зелёная лоза можно найти на земле вблизи залежей минералов. Кажется, что она берет питательные вещества напрямую из минералов. Долгие годы эта лоза казалось бесполезной, однако магические исследования показали, что эта лоза --- важный компонент в защитных заклинаниях.
 	
-	\medspace
-	
-	\noindent \textbf{Бобы Сцилли}
+	\partc{Бобы Сцилли}
 	
 	\noindent Эти светло-коричневые бобы можно случайно найти висящими на кустах Сцилли в сухой местности. Их часто используют для улучшения вкуса при тушении мяса и приготовлении другой пищи. Если раскрыть их потенциал, то они позволят с легкостью карабкаться по скалам и горам.
 	
-	\medspace
-	
-	\noindent \textbf{Серебряный гибискус}
-	
-	\smallskip
+	\partc{Серебряный гибискус}
 	
 	\noindent Это серо-серебряное растение выглядит так, как будто оно представляет необузданные элементальный потенциал. Зачастую оно растет круглыми симметричными узорами, которые сравнивают с паутиной, сплетенной на поверхности листьев. Говорят, что во время бурь листья сверкают одновременно с ударами молнии.
 	
-	\medspace
-	
-	\noindent \textbf{Ягоды шипоцвета}
-	
-	\smallskip
+	\partc{Ягоды шипоцвета}
 	
 	\noindent Эти белые ягоды, которые часто можно найти среди костеобразных цветов, необходимо собирать аккуратно, чтобы не нарушить хрупкую структуру. Если их проглотить, то они немного утолят голод и вызовут небольшое чувство головокружения.
 	
-	\medspace
-	
-	\noindent \textbf{Листохвост}
-	
-	\smallskip
+	\partc{Листохвост}
 	
 	\noindent Это очень странный тёмно-зелёный лист похож на круг с тремя толстыми нитями, которые с него свисают. При прикосновении к листу кажется, будто он вибрирует нераскрытой энергией.
 	
-	\medspace
-	
-	\noindent \textbf{Зеленая крапива}
-	
-	\smallskip
+	\partc{Зеленая крапива}
 	
 	\noindent Это растение легко определить из-за его зелено-желтых крапчатых листьев, чем-то напоминающих сетку. Обычно она растет в лесах. Неосторожный путешественник может случайно на нее наступить, если не будет смотреть под ноги. Рейнджеры говорят, что ее можно использовать для того, чтобы успокоить хищников.
 	
-	\medspace
-	
-	\noindent \textbf{Корень пустоты}
-	
-	\smallskip
+	\partc{Корень пустоты}
 	
 	\noindent Этот темно-серый корень растет в самый суровых условиях, в пустынях и в арктике. Его темпы роста, кажется, варьируются от вида к виду. Травники очень аккуратно собирают корень, потому что создается впечатление, что он влияет на гравитацию вокруг себя.
 	
-	\medspace
-	
-	\noindent \textbf{Корень дикого шалфея}
-	
-	\smallskip
+	\partc{Корень дикого шалфея}
 	
 	\noindent Этот нежно-розовый корень --- дин из самых распространенных ингредиентов среди врачей и лекарей. Обычно они от трех до пяти дюймов в длину, у них мягкая, пушистая текстура. Мастера алхимии и лекари используют его для создания зелий необычайной лечебной силы.
 	
-	\medspace
-	
-	\noindent \textbf{Стебли гифломы}
-	
-	\smallskip
+	\partc{Стебли гифломы}
 	
 	\noindent Эти необычайно редкие грибы стали чем-то вроде сказки среди травников. Сообщается, что у них большая, похожая на луковицу шляпка, расположенная на тонкой ножке. Обычно они формирую скопления глубоко внутри влажных пещер и лесов. Их тело полупрозрачно-синее, а с некоторых углов оно кажется более тусклым, чем с других.
 	
-	\medspace
-	
-	\noindent \textbf{Зловонная луковица}
-	
-	\smallskip
+	\partc{Зловонная луковица}
 	
 	\noindent Эти большие белые луковицы могут быть найдены на болотах, в сырых пещерах и на гниющем остове корабля. Эти луковицы при прикосновении выпускают облако порошка, чтобы сбить с толку и запутать существ вокруг. Если же их успешно собрать, то их можно перемолоть в кашицу. Удивительно, но алхимики заявляют, что итоговый продукт совершенно не похож на то, с чем они начинали работать.
 	
-	\medspace
-	
-	\noindent \textbf{Лепестки змееуста}
-	
-	\smallskip
+	\partc{Лепестки змееуста}
 	
 	\noindent Эти заостренные красные лепестки можно найти растущими на цветах змееуста практически всюду. На ветру лепестки поблескивают словно масло. Больше всего их любят паладины и те, кто ищут справедливости.
 	
@@ -1876,548 +1872,645 @@
 	
 	Мешочек, в котором можно хранить определенное количество алхимических ингредиентов для дальнейшего использования в зельях и ядах. В этих мешочках много разных отделений, чтобы держать ингредиенты раздельно, чтобы минимизировать вероятность какого-либо их ненарочного смешения.
 	
+	\onecolumn
+
 	\chapter{Приложение А: списки ингредиентов}
+	
+	\begin{table}[H]
+		
+		{\Large \textbf{Растительные ингредиенты ядов}}
+		
+		\centering
+		
+		\medspace
+		
+		\begin{tabularx}{\linewidth}{X C c X}
+			
+			\textbf{Растение} & \textbf{Редкость} & \textbf{Мод-р КС} & \textbf{Биом} \\
+			
+			\cellcolor{altertable}Арктический плющ & \cellcolor{altertable}Обычный & \cellcolor{altertable}+2 & \cellcolor{altertable}Арктика, Горы \\
+			
+			Шляпка мухомора & Обычный & +1 & Побережье, Болота \\
+			
+			\cellcolor{altertable}Дыхание василиска & \cellcolor{altertable}Очень редкий & \cellcolor{altertable}+5 & \cellcolor{altertable}Горы \\
+			
+			Сок кактуса & Обычный & +2 & Пустыня, Равнина \\
+			
+			\cellcolor{altertable}Хромовая слизь & \cellcolor{altertable}Редкий & \cellcolor{altertable}+4 & \cellcolor{altertable}Побережье, Подземье \\
+			
+			Цветок Дракуса & Обычный & +2 & Пустыня, Равнина, Горы \\
+			
+			\cellcolor{altertable}Рвоск & \cellcolor{altertable}Обычный & \cellcolor{altertable}+1 & \cellcolor{altertable}Лес, Болота \\
+			
+			Замороженные саженцы & Редкий & +4 & Арктика, Горы \\
+			
+			\cellcolor{altertable}\textbf{Куст Генко} & \cellcolor{altertable}Необычный & \cellcolor{altertable}+2 & \cellcolor{altertable}Холмы, Подземье \\
+			
+			Листья Харрады & Обычный & +1 & Лес \\
+			
+			\cellcolor{altertable}Побег лаванды & \cellcolor{altertable}Обычный & \cellcolor{altertable}$-2$ & \cellcolor{altertable}Побережье, Равнина, Холмы \\
+			
+			Ртутный лишайник & Необычный & +3 & Большинство мест \\
+			
+			\cellcolor{altertable}Сияющий синтоцвет & \cellcolor{altertable}Редкий & \cellcolor{altertable}+4 & \cellcolor{altertable}Подземье \\
+			
+			Ягоды шипоцвета & Необычный & +3 & Пустыня, Болота \\
+			
+			\cellcolor{altertable}Лепестки змееуста & \cellcolor{altertable}Обычный & \cellcolor{altertable}0 & \cellcolor{altertable}Большинство мест \\
+			
+		\end{tabularx}
+		
+	\end{table}
+
+	\begin{dndtable}
+		
+		{\Large \textbf{Большинство мест}}
+		
+		Фраза ''Большинство мест'' в таблице означает, что эти травы можно найти практически в любом месте, если вы решите искать именно их.
+	\end{dndtable}
+
+	\begin{table}[H]
+		
+		{\Large \textbf{Растительные ингредиенты зелий}}
+		
+		\medspace
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{X C c X}
+			
+			\textbf{Растение} & \textbf{Редкость} & \textbf{Мод-р КС} & \textbf{Биом} \\
+			
+			\cellcolor{altertable}Стрельчатый корень & \cellcolor{altertable}Необычный & \cellcolor{altertable}+2 & \cellcolor{altertable}Пустыня, Лес, Равнина \\
+			
+			Кровьтрава & Обычный & 0 & Большинство мест \\
+			
+			\cellcolor{altertable}Синий кровожаб & \cellcolor{altertable}Редкий & \cellcolor{altertable}+3 & \cellcolor{altertable}Побережье, Лес, Болото \\
+			
+			Хромовая слизь & Редкий & +4 & Побережье, Подземье \\
+			
+			\cellcolor{altertable}Небесный Глонд & \cellcolor{altertable}Редкий & \cellcolor{altertable}+3 & \cellcolor{altertable}Побережье, Пустыня \\
+			
+			Дьявольский кроволист & Очень редкий & +5 & Холмы, Болото, Подземье \\
+			
+			\cellcolor{altertable}Сушеная Эфедра & \cellcolor{altertable}Необычный & \cellcolor{altertable}+2 & \cellcolor{altertable}Пустыня, Горы \\
+			
+			Фенхелевый шелк & Обычный & +2 & Арктика, Подземье \\
+			
+			\cellcolor{altertable}Дьявольский плющ & \cellcolor{altertable}Редкий  & \cellcolor{altertable}+4 & \cellcolor{altertable}Холмы, Арктика, Подземье \\
+			
+			Нектар гиацинта & Обычный & +1 & Побережье, Равнина \\
+			
+			\cellcolor{altertable}Водополох & \cellcolor{altertable}Необычный & \cellcolor{altertable}+2 & \cellcolor{altertable}Побережье, Болото \\
+			
+			Сердце железного дерева & Необычный & +3 & Арктика, Лес, Холмы \\
+			
+			\cellcolor{altertable}Светящаяся пыль & \cellcolor{altertable}Редкий & \cellcolor{altertable}+4 & \cellcolor{altertable}Горы, Подземье \\
+			
+			Корень мандрагоры & Обычный & 0 & Большинство мест \\
+			
+			\cellcolor{altertable}Семена молочая & \cellcolor{altertable}Обычный & \cellcolor{altertable}+2 & \cellcolor{altertable}Большинство мест \\
+			
+			Порошок умершей плоти & Очень редкий & +5 & Арктика, Подземье \\
+			
+			\cellcolor{altertable}Ягоды паслена & \cellcolor{altertable}Необычный & \cellcolor{altertable}+3 & \cellcolor{altertable}Лес, Холмы \\
+			
+			Изначальный бальзам & Редкий & +4 & Горы, Болото, Подземье \\
+			
+			\cellcolor{altertable}Каменный вьюн & \cellcolor{altertable}Редкий & \cellcolor{altertable}+4 & \cellcolor{altertable}Холмы, Горы \\
+			
+			Бобы Сцилли & Обычный & +1 & Пустыня, Равнина \\
+			
+			\cellcolor{altertable}Серебряный гибискус & \cellcolor{altertable}Редкий & \cellcolor{altertable}+4 & \cellcolor{altertable}Арктика, Подземье \\
+			
+			Листохвост & Очень редкий & +5 & Равнина, Холмы \\
+			
+			\cellcolor{altertable}Зеленая крапива & \cellcolor{altertable}Необычный & \cellcolor{altertable}+2 & \cellcolor{altertable}Лес \\
+			
+			Корень пустоты & Очень редкий & +5 & Арктика, Пустыня \\
+			
+			\cellcolor{altertable}Корень дикого шалфея & \cellcolor{altertable}Обычный & \cellcolor{altertable}0 & \cellcolor{altertable}Большинство мест \\
+			
+			Стебли гифломы & Очень редкий & +5 & Лес, Подземье \\
+			
+			\cellcolor{altertable}Зловонная луковица & \cellcolor{altertable}Редкий & \cellcolor{altertable}+4 & \cellcolor{altertable}Побережье, Болото \\
+			
+		\end{tabularx}
+	\end{table}
+
+	\chapter{Приложение Б: формулы и создание ядов и зелий}
 	
 	\section{Яды}
 	
-	\subsection{Растительные ингредиенты для ядов}
-	
-	\begin{tabular}{|l|l|c|l|}
-		\hline
-		\textbf{Растение} & \textbf{Редкость} & \textbf{Модификатор КС} & \textbf{Биом} \\
-		\hline
-		Арктический плющ & Обычный & +2 & Арктика, Горы \\
-		\hline
-		Шляпка мухомора & Обычный & +1 & Побережье, Болота \\
-		\hline
-		Дыхание василиска & Очень редкий & +5 & Горы \\
-		\hline
-		Сок кактуса & Обычный & +2 & Пустыня, Равнина \\
-		\hline
-		Хромовая слизь & Редкий & +4 & Побережье, Подземье \\
-		\hline
-		Цветок Дракуса & Обычный & +2 & Пустыня, Равнина, Горы \\
-		\hline
-		Рвоск & Обычный & +1 & Лес, Болота \\
-		\hline
-		Замороженные саженцы & Редкий & +4 & Арктика, Горы \\
-		\hline
-		\textbf{Куст Генко} & Необычный & +2 & Холмы, Подземье \\
-		\hline
-		Листья Харрады & Обычный & +1 & Лес \\
-		\hline
-		Побег лаванды & Обычный & $-2$ & Побережье, Равнина, Холмы \\
-		\hline
-		Ртутный лишайник & Необычный & +3 & Большинство мест \\
-		\hline
-		Сияющий синтоцвет & Редкий & +4 & Подземье \\
-		\hline
-		Ягоды шипоцвета & Необычный & +3 & Пустыня, Болота \\
-		\hline
-		Лепестки змееуста & Обычный & 0 & Большинство мест \\
-		\hline
-	\end{tabular}
-	
-	\paragraph*{Большинство мест}
-	
-	Фраза ''Большинство мест'' в таблице означает, что эти травы можно найти практически в любом биоме, если вы решите искать именно их.
-	
-	\subsection{Формулы и создание ядов}
-	
-	Яды можно изготовить использовав 1 единицу растительного ингредиента \textbf{или} указанной части монстра. Эти части монстров не ограничиваются указанными в списке ниже, поскольку некоторые другие части монстров могут производить такой же или как минимум похожий эффект, как и указанные яды. В качестве альтернативы, указанные части монстров можно использовать как-то иначе.
+	Яды можно изготовить, использовав 1 единицу растительного ингредиента \textbf{или} указанной части монстра. Эти части монстров не ограничиваются указанными в списке ниже, поскольку некоторые другие части монстров могут производить такой же или как минимум похожий эффект, как и указанные яды. В качестве альтернативы, указанные части монстров можно использовать как-то иначе.
 	
 	Если при изготовлении вы используете какое-то \textbf{дополнительное} подходящее растение или часть монстра, то время и стоимость  изготовления яда уменьшится вдвое. Помимо этого ряд ядов не требует изготовления, как, например, яд виверны, поскольку он извлекается напрямую из существа.
 	
 	Изготовления яда --- опасная работа. Если вы не владеете инструментами отравителя, то время и стоимость создания яда увеличивается на 50\%. Число дней, которое нетренированный персонаж проводит за изготовлением засчитывается в общее число дней, необходимое для получения владения инструментами отравителя (XGE стр. ). %Страница 
 	
-	\begin{tabular}{|m{2cm}|m{2cm}|m{2cm}|m{8cm}|m{2cm}|}
-		\hline
-		\textbf{Растение} & \textbf{Часть монстра} & \textbf{Тип} & \textbf{Описание яда} & \textbf{Стоимость} \\
-		\hline
-		Арктический ползун & $-$ & Контактный & \textit{Масло таггита}. \textbf{КС 13 Телосложение} или стать отравленным на 24 часа. Отравленное существо получает статус \textbf{Бессознательный}. Эффект пропадает при получении урона (DMG 258). & 400 зм \\
-		\hline
-		Шляпка мухомора & --- & Вдыхаемый & \textit{Эссенция эфира}. \textbf{КС 15 Телосложение} или стать отравленным на 8 часов. Отравленное существо получает статус \textbf{Бессознательный}. Эффект пропадает при получении урона или если его потрясти (DMG 258). & 300 зм \\
-		\hline
-		Дыхание василиска & --- & Вдыхаемый & \textit{Дыхание василиска}. \textbf{КС 12 Телосложение}. Медленно парализует цель. При проваленном броске, существо \textbf{Опутано}. Повторите спасбросок в конце следующего хода. В случае успеха эффект оканчивается. При провале, тело существа перестает подчиняться ему и парализуется на 24 часа. & 12000 зм \\
-		\hline
-		Сок кактуса & --- & Поглощаемый & \textit{Бледная настойка}. \textbf{КС 15 Телосложение} или получить 1d6 урона ядом и стать отравленным. Отравленное существо повторяет спасбросок каждые 24 часа, получая 1d6 урона ядом в случае провал. Пока яд активен, этот урон не может быть вылечен каким-либо способом. После 7 успешных спасбросков эффект оканчивается и существо может исцеляться нормально (DMG 258). & 250 зм \\
-		\hline
-		Хромовая слизь & Яд виверны & Оружейный & \textit{Яд виверны}. \textbf{КС 15 Телосложение} или получить 7d6 урона ядом (половина урона при успешном спасброске) (DMG 258). & 1200 зм \\
-		\hline
-		Цветок Дракуса & --- & Вдыхаемый & \textit{Злоба} \textbf{КС 15 Телосложение} или стать отравленным на 1 час. Отравленное существо \textbf{Ослеплено} (DMG 258). & 250 зм \\
-		\hline
-		Рвоск & Слизь ползающего падальщика & Контактный & \textit{Слизь ползающего падальщика}. \textbf{КС 13 Телосложение} или отравлен на 1 минуту. Отравленное сущетсво \textbf{Парализовано} и может совершать спасбросок в конце каждого хода для окончания эффекта (DMG 258). & 200 зм \\
-		\hline
-		Замороженные саженцы & --- & Поглощаемый & \textit{Ночные слезы}. Не имеет эффекта до полуночи. Если до этого момента не нейтрализован, то \textbf{КС 17 Телосложение} или 9d6 урона ядом (половина урона при успешном спасброске) (DMG 258). & 1500 \\
-		\hline
-	\end{tabular}	
+	\begin{table}[H]
+		\begin{tabularx}{\linewidth}{Q W W X R}
+			
+			\textbf{Растение} & \textbf{Часть монстра} & \textbf{Тип} & \multicolumn{1}{c}{\textbf{Описание яда}} & \textbf{Стоимость} \\
+
+			\cellcolor{altertable}Арктический ползун & \cellcolor{altertable}--- & \cellcolor{altertable}Контактный & \cellcolor{altertable}\textit{Масло таггита}. \textbf{КС 13 Телосложение} или стать отравленным на 24 часа. Отравленное существо получает статус \textbf{Бессознательный}. Эффект пропадает при получении урона (DMG 258). & \cellcolor{altertable}400 зм \\
+			
+			Шляпка мухомора & --- & Вдыхаемый & \textit{Эссенция эфира}. \textbf{КС 15 Телосложение} или стать отравленным на 8 часов. Отравленное существо получает статус \textbf{Бессознательный}. Эффект пропадает при получении урона или если его потрясти (DMG 258). & 300 зм \\
+			
+			\cellcolor{altertable}Дыхание василиска & \cellcolor{altertable}--- & \cellcolor{altertable}Вдыхаемый & \cellcolor{altertable}\textit{Дыхание василиска}. \textbf{КС 12 Телосложение}. Медленно парализует цель. При проваленном броске, существо \textbf{Опутано}. Повторите спасбросок в конце следующего хода. В случае успеха эффект оканчивается. При провале, тело существа перестает подчиняться ему и парализуется на 24 часа. & \cellcolor{altertable}12000 зм \\
+			
+			Сок кактуса & --- & Поглощаемый & \textit{Бледная настойка}. \textbf{КС 15 Телосложение} или получить 1d6 урона ядом и стать отравленным. Отравленное существо повторяет спасбросок каждые 24 часа, получая 1d6 урона ядом в случае провал. Пока яд активен, этот урон не может быть вылечен каким-либо способом. После 7 успешных спасбросков эффект оканчивается и существо может исцеляться нормально (DMG 258). & 250 зм \\
+			
+			\cellcolor{altertable}Хромовая слизь & \cellcolor{altertable}Яд виверны & \cellcolor{altertable}Оружейный & \cellcolor{altertable}\textit{Яд виверны}. \textbf{КС 15 Телосложение} или получить 7d6 урона ядом (половина урона при успешном спасброске) (DMG 258). & \cellcolor{altertable}1200 зм \\
+			
+			Цветок Дракуса & --- & Вдыхаемый & \textit{Злоба} \textbf{КС 15 Телосложение} или стать отравленным на 1 час. Отравленное существо \textbf{Ослеплено} (DMG 258). & 250 зм \\
+			
+			\end{tabularx}
+		\end{table}
+			
+			
+		\begin{table}[H]
+			\begin{tabularx}{\linewidth}{Q W W X R}
+				
+			\textbf{Растение} & \textbf{Часть монстра} & \textbf{Тип} & \multicolumn{1}{c}{\textbf{Описание яда}} & \textbf{Стоимость} \\	
+			
+			\cellcolor{altertable}Рвоск & \cellcolor{altertable}Слизь ползающего падальщика & \cellcolor{altertable}Контактный & \cellcolor{altertable}\textit{Слизь ползающего падальщика}. \textbf{КС 13 Телосложение} или отравлен на 1 минуту. Отравленное сущетсво \textbf{Парализовано} и может совершать спасбросок в конце каждого хода для окончания эффекта (DMG 258). & \cellcolor{altertable}200 зм \\
+			
+			Замороженные саженцы & --- & Поглощаемый & \textit{Ночные слезы}. Не имеет эффекта до полуночи. Если до этого момента не нейтрализован, то \textbf{КС 17 Телосложение} или 9d6 урона ядом (половина урона при успешном спасброске) (DMG 258). & 1500 \\
+			
+			\cellcolor{altertable}\textbf{Куст Генко} & \cellcolor{altertable}--- & \cellcolor{altertable}Оружейный & \cellcolor{altertable}\textit{Яд Дроу}. \textbf{КС 13 Телосложение} или отравлен на 1 час. При провале больше чем на 5 существо \textbf{Бессознательно} на время отравления. Существо приходит в сознание при получении урона или если его потрясти. Изготавливается в темноте. & \cellcolor{altertable}200 зм \\
+			
+			Листья Харрады & Яд гигантской ядовитой змеи & Оружейный & \textit{Змеиный яд}. \textbf{КС 11 Телосложение} или получить3d6 урона ядом (половина урона при успешном спасброске) (DMG 258) & 200 зм \\
+			
+			\cellcolor{altertable}Побег лаванды & \cellcolor{altertable}--- & \cellcolor{altertable}Поглощаемый & \cellcolor{altertable}\textit{Кровь ассасина}. \textbf{КС 10 Телосложение} или 1d12 урона ядом и отравлен на 24 часа. При успешном спасброске половина урона и не отравлен (DMG 258). & \cellcolor{altertable}150 зм \\
+			
+			Ртутный лишайник & --- & Вдыхаемый & \textit{Дым жженого отура}. \textbf{КС 13 Телосложение} или 3d6 урона ядом. В начале каждого хода цель должна повторять спасбросок. За каждый последующий провал цель получает 1d6 урона ядом. После трех успешных бросков действие яда оканчивается (DMG 258). & 500 зм \\
+			
+			\cellcolor{altertable}Сияющий синтоцвет & \cellcolor{altertable}Яд лилового червя & \cellcolor{altertable}Оружейный & \cellcolor{altertable}\textit{Лиловая смерть}. \textbf{КС 19 Телосложение} или 12d6 урона ядом (половина урона при успешном спасброске) (DMG 258) & \cellcolor{altertable}2000 зм \\
+			
+			Ягоды шипоцвета & --- & Поглощаемый & \textit{Ступор}. \textbf{КС 15 Телосложение} или отравлен на 4d6 часов. Отравленное существо \textbf{Недееспособно} (DMG 258). & 600 зм \\
+			
+			\cellcolor{altertable}Лепестки змееуста & \cellcolor{altertable}--- & \cellcolor{altertable}Поглощаемый & \cellcolor{altertable}\textit{Сыворотка правды}. \textbf{КС 11 Телосложение} или отравлен на 1 час. Отравленное существо не может врать, как будто бы оно находится под заклинанием \textbf{Область истины} (DMG 258). & \cellcolor{altertable}150 зм \\
+		\end{tabularx}
+	\end{table}
+
+
 	
-	\begin{tabular}{|m{2cm}|m{2cm}|m{2cm}|m{8cm}|m{2cm}|}
-		\hline	
-		\textbf{Куст Генко} & --- & Оружейный & \textit{Яд Дроу}. \textbf{КС 13 Телосложение} или отравлен на 1 час. При провале больше чем на 5 существо \textbf{Бессознательно} на время отравления. Существо приходит в сознание при получении урона или если его потрясти. Изготавливается в темноте. & 200 зм \\
-		\hline
-		Листья Харрады & Яд гигантской ядовитой змеи & Оружейный & \textit{Змеиный яд}. \textbf{КС 11 Телосложение} или получить3d6 урона ядом (половина урона при успешном спасброске) (DMG 258) & 200 зм \\
-		\hline
-		Побег лаванды & --- & Поглощаемый & \textit{Кровь ассасина}. \textbf{КС 10 Телосложение} или 1d12 урона ядом и отравлен на 24 часа. При успешном спасброске половина урона и не отравлен (DMG 258). & 150 зм \\
-		\hline
-		Ртутный лишайник & --- & Вдыхаемый & \textit{Дым жженого отура}. \textbf{КС 13 Телосложение} или 3d6 урона ядом. В начале каждого хода цель должна повторять спасбросок. За каждый последующий провал цель получает 1d6 урона ядом. После трех успешных бросков действие яда оканчивается (DMG 258). & 500 зм \\
-		\hline
-		Сияющий синтоцвет & Яд лилового червя & Оружейный & \textit{Лиловая смерть}. \textbf{КС 19 Телосложение} или 12d6 урона ядом (половина урона при успешном спасброске) (DMG 258) & 2000 зм \\
-		\hline
-		Ягоды шипоцвета & --- & Поглощаемый & \textit{Ступор}. \textbf{КС 15 Телосложение} или отравлен на 4d6 часов. Отравленное существо \textbf{Недееспособно} (DMG 258). & 600 зм \\
-		\hline
-		Лепестки змееуста & --- & Поглощаемый & \textit{Сыворотка правды}. \textbf{КС 11 Телосложение} или отравлен на 1 час. Отравленное существо не может врать, как будто бы оно находится под заклинанием \textbf{Область истины} (DMG 258). & 150 зм \\
-		\hline
-	\end{tabular}
+		
+	
 
 % Кто такой этот ваш Куст Генко? В этой секции есть, в предыдущей нет. Дальше есть, в таблицах Подземья, например.
 
 	\section{Зелья}
 	
-	\subsection{Растительные ингредиенты для зелий}
-
-
-	\begin{tabular}{|c|c|c|c|}
-		\hline
-		\textbf{Растение} & \textbf{Редкость} & \textbf{Модификатор КС} & \textbf{Биом} \\
-		\hline
-		Стрельчатый корень & Необычный & +2 & Пустыня, Лес, Равнина \\
-		\hline
-		Кровьтрава & Обычный & 0 & Большинство мест \\
-		\hline
-		Синий кровожаб & Редкий & +3 & Побережье, Лес, Болото \\
-		\hline
-		Хромовая слизь & Редкий & +4 & Побережье, Подземье \\
-		\hline
-		Небесный Глонд & Редкий & +3 & Побережье, Пустыня \\
-		\hline
-		Дьявольский кроволист & Очень редкий & +5 & Холмы, Болото, Подземье \\
-		\hline
-		Сушеная Эфедра & Необычный & +2 & Пустыня, Горы \\
-		\hline
-		Фенхелевый шелк & Обычный & +2 & Арктика, Подземье \\
-		\hline
-		Дьявольский плющ & Редкий  & +4 & Холмы, Арктика, Подземье \\
-		\hline
-		Нектар гиацинта & Обычный & +1 & Побережье, Равнина \\
-		\hline
-		Водополох & Необычный & +2 & Побережье, Болото \\
-		\hline
-		Сердце железного дерева & Необычный & +3 & Арктика, Лес, Холмы \\
-		\hline
-		Светящаяся пыль & Редкий & +4 & Горы, Подземье \\
-		\hline
-		Корень мандрагоры & Обычный & 0 & Большинство мест \\
-		\hline
-		Семена молочая & Обычный & +2 & Большинство мест \\
-		\hline
-		Порошок умершей плоти & Очень редкий & +5 & Арктика, Подземье \\
-		\hline
-		Ягоды паслена & Необычный & +3 & Лес, Холмы \\
-		\hline
-		Изначальный бальзам & Редкий & +4 & Горы, Болото, Подземье \\
-		\hline
-		Каменный вьюн & Редкий & +4 & Холмы, Горы \\
-		\hline
-		Бобы Сцилли & Обычный & +1 & Пустыня, Равнина \\
-		\hline
-		Серебряный гибискус & Редкий & +4 & Арктика, Подземье \\
-		\hline
-		Листохвост & Очень редкий & +5 & Равнина, Холмы \\
-		\hline
-		Зеленая крапива & Необычный & +2 & Лес \\
-		\hline
-		Корень пустоты & Очень редкий & +5 & Арктика, Пустыня \\
-		\hline
-		Корень дикого шалфея & Обычный & 0 & Большинство областей \\
-		\hline
-		Стебли гифломы & Очень редкий & +5 & Лес, Подземье \\
-		\hline
-		Зловонная луковица & Редкий & +4 & Побережье, Болото \\
-		\hline
-	\end{tabular}
-
-	\paragraph{Мастерство зельеварения}
 	
-	Если вы не владеете ни инструментами алхимика, ни \textbf{Интеллектом} (Магия), время и стоимость изготовления зелья увеличиваются на 50\%. Число дней, которое нетренированный персонаж проводит за изготовлением засчитывается в общее число дней, необходимое для получения владения инструментами алхимика (XGE стр. ). %Страница 
-	
-	\subsection{Формулы и создание зелий}
 	
 	Для создания зелий нужный \textbf{как} 1 единица указанного растительного ингредиента, \textbf{так и} указанная часть монстра, если в формуле не сказано обратное. Эти части монстров не ограничиваются указанными в списке ниже, поскольку некоторые другие части монстров могут производить такой же или как минимум похожий эффект, как и указанные яды. В качестве альтернативы, указанные части монстров можно использовать как-то иначе.
 	
 	Если при изготовлении вы используете какое-то \textbf{дополнительное} подходящее растение или часть монстра, то время и стоимость  изготовления яда уменьшится вдвое. 
 	
-	\begin{tabular}{|m{3cm}|m{4cm}|m{10cm}|}
-		\hline
-		\textbf{Растение} & \textbf{Часть монстра} & \textbf{Описание зелья} \\
-		\hline
-		Стрельчатый корень & --- & Масло остроты с дополнительным бонусом +1 (DMG) \\
-		\hline
-		Синий кровожаб & --- & Зелье газообразной формы (DMG) \\
-		\hline
-		Хромовая слизь & --- &  Масло эфирности (DMG) \\
-		\hline
-		Небесный Глонд & \textit{Глаз второго взгляда} & Зелье ясновидения (DMG) \\
-		\hline
-		Дьявольский кроволист & \textit{Восстановленная эссенция жизни} & Зелье живучести (DMG) \\
-		\hline
-		Сушеная Эфедра & --- & Любовное зелье (DMG) \\
-		\hline
-		Фенхелевый шелк & --- & Зелье больших шагов. На 1 час к вашей скорости передвижения добавляется 10 футов. Зелье постепенно переливается от ночного черного к золотисто-желтому, если его покрутить. \\
-		\hline
-		Дьявольский плющ & --- & Зелье чтения мыслей (DMG) \\
-		\hline
-		Нектар гиацинта & --- & Зелье многих языков. На 1 час вы оказываетесь под действием заклинания ''Понимание языков'' (Comprehend languages). Цвет зелья меняется согласно цветам радуги. \\
-		\hline
-		Водополох & --- & Зелье подводного дыхания (DMG) \\
-		\hline
-		Сердце железного дерева & --- & Зелье увеличения (DMG) \\
-		\hline
-		Светящаяся пыль & --- & Зелье героизма \\
-		\hline
-		Корень мандрагоры & --- & Зелье ложной жизни. Вы получаете 1d4 + 4 временных ХП на 1 час. Зелье представляет собой иссиня-черную жидкость с белым вихрем, медленно вращающимся внутри.\\
-		\hline
-		Семена молочая & \textit{Настойка сопротивления} &  Зелье сопротивления (DMG). Если зелье изготавливается без настойки, то тип урона выбирается случайно.\\
-		\hline
-		Порошок умершей плоти & Хвост скорпиона, клык гадюки, паук и крошечное бьющееся сердце & Зелье долголетия \\
-		\hline
-		Ягоды паслена & --- & Масло ускользания  \\
-		\hline
-		Изначальный бальзам & Осколок ногтя великана & Зелье силы великана. Тип зелья соответствует типу великана, осколок ногтя которого был использован. \\
-		\hline
-		Каменный вьюн & --- & Зелье неуязвимости \\
-		\hline
-		Бобы Сцилли & --- & Зелье лазания \\
-		\hline
-	\end{tabular}
+	\begin{dndtable}
+		{\Large \textbf{Мастерство зельеварения}}
+		
+		Если вы не владеете ни инструментами алхимика, ни \textbf{Интеллектом} (Магия), время и стоимость изготовления зелья увеличиваются на 50\%. Число дней, которое нетренированный персонаж проводит за изготовлением засчитывается в общее число дней, необходимое для получения владения инструментами алхимика (XGE стр. ). %Страница
+	\end{dndtable}
 
-	\begin{tabular}{|m{3cm}|m{4cm}|m{10cm}|}
-		\hline
+	\begin{table}[H]
+		
+	\end{table}
+	
+	\begin{tabularx}{\linewidth}{T E X}
+		
+		\textbf{Растение} & \textbf{Часть монстра} &  \multicolumn{1}{c}{\textbf{Зелье}} \\
+		
+		\cellcolor{altertable}Стрельчатый корень & \cellcolor{altertable}--- & \cellcolor{altertable}Масло остроты с дополнительным бонусом +1 (DMG) \\
+		
+		Синий кровожаб & --- & Зелье газообразной формы (DMG) \\
+		
+		\cellcolor{altertable}Хромовая слизь & \cellcolor{altertable}--- &  \cellcolor{altertable}Масло эфирности (DMG) \\
+		
+		Небесный Глонд & \textit{Глаз второго взгляда} & Зелье ясновидения (DMG) \\
+		
+		\cellcolor{altertable}Дьявольский кроволист & \cellcolor{altertable}\textit{Восстановленная эссенция жизни} & \cellcolor{altertable}Зелье живучести (DMG) \\
+		
+		Сушеная Эфедра & --- & Любовное зелье (DMG) \\
+		
+		\cellcolor{altertable}Фенхелевый шелк & \cellcolor{altertable}--- & \cellcolor{altertable}Зелье больших шагов. На 1 час к вашей скорости передвижения добавляется 10 футов. Зелье постепенно переливается от ночного черного к золотисто-желтому, если его покрутить. \\
+		
+		Дьявольский плющ & --- & Зелье чтения мыслей (DMG) \\
+		
+		\cellcolor{altertable}Нектар гиацинта & \cellcolor{altertable}--- & \cellcolor{altertable}Зелье многих языков. На 1 час вы оказываетесь под действием заклинания ''Понимание языков'' (Comprehend languages). Цвет зелья меняется согласно цветам радуги. \\
+		
+		Водополох & --- & Зелье подводного дыхания (DMG) \\
+		
+		\cellcolor{altertable}Сердце железного дерева & \cellcolor{altertable}--- & \cellcolor{altertable}Зелье увеличения (DMG) \\
+		
+		Светящаяся пыль & --- & Зелье героизма \\
+		
+		\cellcolor{altertable}Корень мандрагоры & \cellcolor{altertable}--- & \cellcolor{altertable}Зелье ложной жизни. Вы получаете 1d4 + 4 временных ХП на 1 час. Зелье представляет собой иссиня-черную жидкость с белым вихрем, медленно вращающимся внутри.\\
+		
+		Семена молочая & \textit{Настойка сопротивления} &  Зелье сопротивления (DMG). Если зелье изготавливается без настойки, то тип урона выбирается случайно.\\
+		
+		\cellcolor{altertable}Порошок умершей плоти & \cellcolor{altertable}Хвост скорпиона, клык гадюки, паук и крошечное бьющееся сердце & \cellcolor{altertable}Зелье долголетия \\
+		
+		Ягоды паслена & --- & Масло ускользания  \\
+		
+		\cellcolor{altertable}Изначальный бальзам & \cellcolor{altertable}Осколок ногтя великана & \cellcolor{altertable}Зелье силы великана. Тип зелья соответствует типу великана, осколок ногтя которого был использован. \\
+		
+		Каменный вьюн & --- & Зелье неуязвимости \\
+		
+		\cellcolor{altertable}Бобы Сцилли & \cellcolor{altertable}--- & \cellcolor{altertable}Зелье лазания \\
+		
 		Серебряный гибискус & Чешуя дракона & Зелье драконьего дыхания. Работает так же, как \textbf{Зелье огненного дыхания}, но тип урона соответствует использованной при изготовлении чешуе. Если зелье изготавливалось без нее, то получается \textbf{Зелье огненного дыхания}.  \\
-		\hline
-		Листохвост & \textit{Эссенция ловкости} & Зелье скорости (DMG) \\
-		\hline
+		
+		\cellcolor{altertable}Листохвост & \cellcolor{altertable}\textit{Эссенция ловкости} & \cellcolor{altertable}Зелье скорости (DMG) \\
+		
 		Зеленая крапива & \textit{Эссенция дикости} & Зелье дружбы с животными \\
-		\hline
-		Корень пустоты & \textit{Эссенция подавления гравитации} & Зелье полета (DMG) \\
-		\hline
+		
+		\cellcolor{altertable}Корень пустоты & \cellcolor{altertable}\textit{Эссенция подавления гравитации} & \cellcolor{altertable}Зелье полета (DMG) \\
+		
 		Корень дикого шалфея &  & \textit{Зелье лечения} (затраченных единиц/тип зелья): 1/обычное, 4/большое, 40/отличное, 400/превосходное (XGE) \\ %Проверить XGE????
-		\hline
-		Стебли гифломы & Эссенция невидимого & Зелье невидимости (DMG) \\
-		\hline
+		
+		\cellcolor{altertable}Стебли гифломы & \cellcolor{altertable}Эссенция невидимого & \cellcolor{altertable}Зелье невидимости (DMG) \\
+		
 		Зловонная луковица & --- & Зелье уменьшения \\
-		\hline
-	\end{tabular}
+		
+	\end{tabularx}
 
 % Что насчет кровьтравы? В таблице регов есть, тут нет нигде. Можно какое-нибудь зелье сытости из нее создать, например.
 
-	\chapter{Приложение Б: таблицы мест произрастания растений} %подумай еще раз
+	\twocolumn
+
+	\chapter{Приложение В: таблицы мест произрастания растений} %подумай еще раз
 	
 	Таблицы, приведенные здесь, используются для случайного определения типа растения, найденного при проведении проверки \textbf{Сбора} навыка травничества.
 	
 	Рядом с некоторыми ингредиентами в таблице расположены дополнительные правила. Например, единицу или две водополоха можно найти под водой, однако большие его количества встречаются только на \textbf{Болоте} во время дождя.
 	
-	\subsection{Обычные ингредиенты}
+	\begin{table}[H]
+		
+		{\Large \textbf{Распространенные ингредиенты}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{1d12}& \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}1 & \cellcolor{altertable}Корень мандрагоры \\
+			
+			2 & Корень мандрагоры \\
+			
+			\cellcolor{altertable}3 & \cellcolor{altertable}Ртутный лишайник \\
+			
+			4 & Ртутный лишайник  \\
+			
+			\cellcolor{altertable}5 & \cellcolor{altertable}Корень дикого шалфея  \\
+			
+			6 & Корень дикого шалфея \\
+			
+			\cellcolor{altertable}7 & \cellcolor{altertable}Корень дикого шалфея  \\
+			
+			8 & Лепестки змееуста \\
+			
+			\cellcolor{altertable}9 & \cellcolor{altertable}Лепестки змееуста  \\
+			
+			10 & Семена молочая \\
+			
+			\cellcolor{altertable}11 & \cellcolor{altertable}Семена молочая  \\
+			
+			12 & Кровьтрава  \\ % в оригинале написано про сухарь, но зачем, казалось бы, если пишем в зельях?
+			
+		\end{tabularx}
+	\end{table}
+
+	\begin{table}[H]
+		
+		{\Large \textbf{Равнина}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{2d6} & \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}2 & \cellcolor{altertable}Листья Харрады  \\
+			
+			3 & Цветок Дракуса  \\
+			
+			\cellcolor{altertable}4 & \cellcolor{altertable}Побег лаванды  \\
+			
+			5 & Стрельчатый корень  \\
+			
+			\cellcolor{altertable}6 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			7 & Обычный ингредиент \\
+			
+			\cellcolor{altertable}8 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			9 & 2x Бобы Сцилли \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}Сок кактуса  \\
+			
+			11 & Листохвост  \\
+			
+			\cellcolor{altertable}12 & \cellcolor{altertable}Нектар гиацинта
+		\end{tabularx}
+	\end{table}
+
+	\begin{table}[H]
+		
+		{\Large \textbf{Холмы}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{2d6} & \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}2 & \cellcolor{altertable}Дьявольский кроволист  \\
+			
+			3 & Ягоды паслена  \\
+			
+			\cellcolor{altertable}4 & \cellcolor{altertable}2x Листохвост \\
+			
+			5 & Побег лаванды  \\
+			
+			\cellcolor{altertable}6 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			7 & Обычный ингредиент \\
+			
+			\cellcolor{altertable}8 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			9 & Сердце железного дерева  \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}Куст Генко  \\
+			
+			11 & Каменный вьюн  \\
+			
+			\cellcolor{altertable}12 & \cellcolor{altertable}Листья Харрады
+		\end{tabularx}
+	\end{table}
+
+\begin{table}[H]
 	
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\textbf{1d12}& Название ингредиента & Дополнительные правила \\
-		\hline
-		1 & Корень мандрагоры & --- \\
-		\hline
-		2 & Корень мандрагоры & --- \\
-		\hline
-		3 & Ртутный лишайник & --- \\
-		\hline
-		4 & Ртутный лишайник &  \\
-		\hline
-		5 & Корень дикого шалфея &  \\
-		\hline
-		6 & Корень дикого шалфея &  \\
-		\hline
-		7 & Корень дикого шалфея &  \\
-		\hline
-		8 & Лепестки змееуста &  \\
-		\hline
-		9 & Лепестки змееуста &  \\
-		\hline
-		10 & Семена молочая &  \\
-		\hline
-		11 & Семена молочая &  \\
-		\hline
-		12 & Кровьтрава &  \\ % в оригинале написано про сухарь, но зачем, казалось бы, если пишем в зельях?
-		\hline
-	\end{tabular}
+	{\Large \textbf{Лес}}
 	
-	\subsection{Равнина}
+	\medspace 
 	
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\textbf{2d6} & \textbf{Ингредиент} & \textbf{Дополнительные правила} \\
-		\hline
-		2 & Листья Харрады &  \\
-		\hline
-		3 & Цветок Дракуса &  \\
-		\hline
-		4 & Побег лаванды &  \\
-		\hline
-		5 & Стрельчатый корень &  \\
-		\hline
-		6 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		7 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		8 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		9 & Бобы Сцилли & Удвоенное количество \\
-		\hline
-		10 & Сок кактуса &  \\
-		\hline
-		11 & Листохвост &  \\
-		\hline
-		12 & Нектар гиацинта &  \\
-		\hline
-	\end{tabular}
+	\centering 
+	
+	\begin{tabularx}{\linewidth}{c C}
+		
+		\textbf{2d6} & \textbf{Название ингредиента} \\
+		
+		\cellcolor{altertable}2 & \cellcolor{altertable}Листья Харрады \\
+		
+		3 & Ягоды паслена  \\
+		
+		\cellcolor{altertable}4 & \cellcolor{altertable}Рвоск \\
+		
+		5 & Зеленая крапива  \\
+		
+		\cellcolor{altertable}6 & \cellcolor{altertable}Обычный ингредиент \\
+		
+		7 & Обычный ингредиент \\
+		
+		\cellcolor{altertable}8 & \cellcolor{altertable}Обычный ингредиент \\
+		
+		9 & Стрельчатый корень  \\
+		
+		\cellcolor{altertable}10 & \cellcolor{altertable}Сердце железного дерева  \\
+		
+		11 & Синий кровожаб  \\
+		
+		\cellcolor{altertable}12 & Ночь: \cellcolor{altertable}2x Стебли гифломы/перебросить
+	\end{tabularx}
+\end{table}
 
-\subsection{Холмы}
+	\begin{table}[H]
+		
+		{\Large \textbf{Пустыня}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{2d6} & \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}2 & \cellcolor{altertable}Небесный глонд  \\
+			
+			3 & Стрельчатый корень  \\
+			
+			\cellcolor{altertable}4 & \cellcolor{altertable}Сушеная Эфедра \\
+			
+			5 & 2x Сок кактуса \\
+			
+			\cellcolor{altertable}6 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			7 & Обычный ингредиент \\
+			
+			\cellcolor{altertable}8 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			9 & Цветок Дракуса  \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}Бобы Сцилли  \\
+			
+			11 & Ягоды шипоцвета  \\
+			
+			\cellcolor{altertable}12 & \cellcolor{altertable}Корень пустоты  \\
+		\end{tabularx}
+	\end{table}
 
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\textbf{2d6}& \textbf{Ингредиент} & Дополнительные правила \\
-		\hline
-		2 & Дьявольский кроволист &  \\
-		\hline
-		3 & Ягоды паслена &  \\
-		\hline
-		4 & Листохвост & Удвоенное коилчество \\
-		\hline
-		5 & Побег лаванды &  \\
-		\hline
-		6 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		7 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		8 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		9 & Сердце железного дерева &  \\
-		\hline
-		10 & Куст Генко  &  \\
-		\hline
-		11 & Каменный вьюн &  \\
-		\hline
-		12 & Листья Харрады &  \\
-		\hline
-	\end{tabular}
+	\begin{table}[H]
+		
+		{\Large \textbf{Водная гладь/Побережье}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{2d6} & \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}2 & \cellcolor{altertable}1/2x Водополох \\
+			
+			3 & Шляпка мухомора \\
+			
+			\cellcolor{altertable}4 & \cellcolor{altertable}Нектар гиацинта \\
+			
+			5 & Хромовая слизь \\
+			
+			\cellcolor{altertable}6 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			7 & Обычный ингредиент \\
+			
+			\cellcolor{altertable}8 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			9 & Побег лаванды (только на побережье) \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}Синий кровожаб  \\
+			
+			11 & Зловонная луковица  \\
+			
+			\cellcolor{altertable}12 & \cellcolor{altertable}1/2x Небесный Глонд \\
+		\end{tabularx}
+	\end{table}
 
-\subsection{Лес}
+	\begin{table}[H]
+		
+		{\Large \textbf{Горы}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{2d6} & \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}2 & \cellcolor{altertable}Дыхание василиска  \\
+			
+			3 & Замороженные саженцы  \\
+			
+			\cellcolor{altertable}4 & \cellcolor{altertable}Арктический плющ \\
+			
+			5 & Сушеная Эфедра  \\
+			
+			\cellcolor{altertable}6 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			7 & Обычный ингредиент \\
+			
+			\cellcolor{altertable}8 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			9 & Цветок Дракуса  \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}Светящаяся пыль (2x в \textbf{пещерах}) \\
+			
+			11 & Каменный вьюн  \\
+			
+			\cellcolor{altertable}12 & \cellcolor{altertable}Изначальный бальзам  \\
+		\end{tabularx}
+	\end{table}
 
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\textbf{2d6} & \textbf{Ингредиент} & \textbf{Дополнительные правила} \\
-		\hline
-		2 & Листья Харрады &  \\
-		\hline
-		3 & Ягоды паслена &  \\
-		\hline
-		4 & Рвоск &  \\
-		\hline
-		5 & Зеленая крапива &  \\
-		\hline
-		6 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		7 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		8 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-		\hline
-		9 & Стрельчатый корень &  \\
-		\hline
-		10 & Сердце железного дерева &  \\
-		\hline
-		11 & Синий кровожаб &  \\
-		\hline
-		12 & Стебли гифломы & \textbf{Ночь}: удвоенное количество; \textbf{День}: перебросить \\
-		\hline
-	\end{tabular}
+	\begin{table}[H]
+		
+		{\Large \textbf{Болото}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{2d6} & \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}2 & \cellcolor{altertable}Дьявольский кроволист \\
+			
+			3 & Ягоды шипоцвета \\
+			
+			\cellcolor{altertable}4 & \cellcolor{altertable}Рвоск \\
+			
+			5 & 2x Шляпка мухомора \\
+			
+			\cellcolor{altertable}6 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			7 & Обычный ингредиент \\
+			
+			\cellcolor{altertable}8 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			9 & 2x Синий кровожаб \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}Зловонная луковица \\
+			
+			11 & Водополох (2x во время дождя)\\
+			
+			\cellcolor{altertable}12 & \cellcolor{altertable}Изначальный бальзам
+		\end{tabularx}
+	\end{table}
 
-\subsection{Пустыня}
+	\newpage
 
-\begin{tabular}{|c|c|c|}
-	\hline
-	\textbf{2d6} & \textbf{Ингредиент} & \textbf{Дополнительные правила} \\
-	\hline
-	2 & Небесный глонд &  \\
-	\hline
-	3 & Стрельчатый корень &  \\
-	\hline
-	4 & Сушеная Эфедра &  \\
-	\hline
-	5 & Сок кактуса & Удвоенное количество \\
-	\hline
-	6 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	7 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	8 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	9 & Цветок Дракуса &  \\
-	\hline
-	10 & Бобы Сцилли &  \\
-	\hline
-	11 & Ягоды шипоцвета &  \\
-	\hline
-	12 & Корень пустоты &  \\
-	\hline
-\end{tabular}
+	\begin{table}[H]
+		
+		{\Large \textbf{Арктика}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{2d6} & \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}2 & \cellcolor{altertable}Серебряный гибискус \\
+			
+			3 & Порошок умершей плоти \\
+			
+			\cellcolor{altertable}4 & \cellcolor{altertable}Сердце железного дерева \\
+			
+			5 & 2x Замороженные саженцы \\
+			
+			\cellcolor{altertable}6 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			7 & Обычный ингредиент \\
+			
+			\cellcolor{altertable}8 & \cellcolor{altertable}Обычный ингредиент \\
+			
+			9 & 2x Арктический плющ \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}Фенхелевый шелк \\
+			
+			11 & Дьявольский плющ \\
+			
+			\cellcolor{altertable}12 & \cellcolor{altertable}Корень пустоты
+		\end{tabularx}
+	\end{table}
 
-\subsection{Вода/Побережье}
-
-\begin{tabular}{|c|c|c|}
-	\hline
-	\textbf{2d6} & \textbf{Ингредиент} & \textbf{Дополнительные правила} \\
-	\hline
-	2 & Водополох & \textit{Половина количества} \\
-	\hline
-	3 & Шляпка мухомора &  \\
-	\hline
-	4 & Нектар гиацинта &  \\
-	\hline
-	5 & Хромовая слизь &  \\
-	\hline
-	6 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	7 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	8 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	9 & Побег лаванды & Только на побережье \\
-	\hline
-	10 & Синий кровожаб &  \\
-	\hline
-	11 & Зловонная луковица &  \\
-	\hline
-	12 & Небесный Глонд & Половина количества \\
-	\hline
-\end{tabular}
-
-\subsection{Горы}
-
-\begin{tabular}{|c|c|c|}
-	\hline
-	\textbf{2d6} & \textbf{Ингредиент} & \textbf{Дополнительные правила} \\
-	\hline
-	2 & Дыхание василиска &  \\
-	\hline
-	3 & Замороженные саженцы &  \\
-	\hline
-	4 & Арктический плющ &  \\
-	\hline
-	5 & Сушеная Эфедра &  \\
-	\hline
-	6 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	7 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	8 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	9 & Цветок Дракуса &  \\
-	\hline
-	10 & Светящаяся пыль & Удвоенное количество в \textbf{пещерах} \\
-	\hline
-	11 & Каменный вьюн &  \\
-	\hline
-	12 & Изначальный бальзам &  \\
-	\hline
-\end{tabular}
-
-\subsection{Болото}
-
-\begin{tabular}{|c|c|c|}
-	\hline
-	\textbf{2d6} & \textbf{Ингредиент} & \textbf{Дополнительные правила} \\
-	\hline
-	2 & Дьявольский кроволист &  \\
-	\hline
-	3 & Ягоды шипоцвета &  \\
-	\hline
-	4 & Рвоск &  \\
-	\hline
-	5 & Шляпка мухомора & Удвоенное количество \\
-	\hline
-	6 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	7 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	8 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	9 & Синий кровожаб & Удвоенное количество \\
-	\hline
-	10 & Зловонная луковица &  \\
-	\hline
-	11 & Водополох & Удвоенное количество во время дождя \\
-	\hline
-	12 & Изначальный бальзам &  \\
-	\hline
-\end{tabular}
-
-\subsection{Арктика}
-
-\begin{tabular}{|c|c|c|}
-	\hline
-	\textbf{2d6} & \textbf{Ингредиент} & \textbf{Дополнительные правила} \\
-	\hline
-	2 & Серебряный гибискус &  \\
-	\hline
-	3 & Порошок умершей плоти &  \\
-	\hline
-	4 & Сердце железного дерева &  \\
-	\hline
-	5 & Замороженные саженцы & Удвоенное количество \\
-	\hline
-	6 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	7 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	8 & Обычный ингредиент & Бросок по таблице \textit{Обычные ингредиенты} \\
-	\hline
-	9 & Арктический плющ & Удвоенное количество \\
-	\hline
-	10 & Фенхелевый шелк &  \\
-	\hline
-	11 & Дьявольский плющ &  \\
-	\hline
-	12 & Корень пустоты &  \\
-	\hline
-\end{tabular}
-
-\subsection{Подземье}
-
-\begin{tabular}{|c|c|c|}
-	\hline
-	\textbf{2d6} & \textbf{Ингредиент} & \textbf{Дополнительные правила} \\
-	\hline
-	2 & Изначальный бальзам & \textit{Половина количества} \\
-	\hline
-	3 & Серебряный гибискус &  \\
-	\hline
-	4 & Дьявольский кроволист &  \\
-	\hline
-	5 & Хромовая слизь &  \\
-	\hline
-	6 & Порошок умершей плоти & Удвоенное количество \\
-	\hline
-	7 & Фенхелевый шелк &  \\
-	\hline
-	8 & Дьявольский плющ &  \\
-	\hline
-	9 & \textit{Куст Генко} &  \\
-	\hline
-	10 & Светящаяся пыль & Удвоенное количество \\
-	\hline
-	11 & Сияющий синтоцвет &  \\
-	\hline
-	12 & Стебли гифломы &  \\
-	\hline
-\end{tabular}
+	\begin{table}[H]
+		
+		{\Large \textbf{Подземье}}
+		
+		\medspace 
+		
+		\centering 
+		
+		\begin{tabularx}{\linewidth}{c C}
+			
+			\textbf{2d6} & \textbf{Название ингредиента} \\
+			
+			\cellcolor{altertable}2 & \cellcolor{altertable}1/2x Изначальный бальзам \\
+			
+			3 & Серебряный гибискус  \\
+			
+			\cellcolor{altertable}4 & \cellcolor{altertable}Дьявольский кроволист  \\
+			
+			5 & Хромовая слизь  \\
+			
+			\cellcolor{altertable}6 & \cellcolor{altertable}2x Порошок умершей плоти \\
+			
+			7 & Фенхелевый шелк \\
+			
+			\cellcolor{altertable}8 & \cellcolor{altertable}Дьявольский плющ \\
+			
+			9 & \textit{Куст Генко} \\
+			
+			\cellcolor{altertable}10 & \cellcolor{altertable}2x Светящаяся пыль \\
+			
+			11 & Сияющий синтоцвет \\
+			
+			\cellcolor{altertable}12 & \cellcolor{altertable}Стебли гифломы
+		\end{tabularx}
+	\end{table}
 	
 	
 	
